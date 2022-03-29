@@ -76,8 +76,13 @@ Threshs = list(Threshs)
 #agg_x =[] 
 #%%
 
+
+
+
+
 def arabid2lp_costf(inputparams):
     #print(inputparams[3])
+    inp = list(inputparams[0:9])
     agg_cost =[]
     gates = gate
     gates = list(gates)
@@ -86,41 +91,47 @@ def arabid2lp_costf(inputparams):
     l = inputparams[9:11]
     inputparams_ = inputparams[0:9]
     inputparams_ = list(inputparams_)
+    #print(inputparams_)
     for id in range(len(Threshs)):
         inputparams_.append(float(Threshs[id][0])) # add thresholds here 
+        #print(inputparams_)
         inputparams_.append(float(Threshs[id][1]))
         inputparams_.append(float(Threshs[id][2]))
         inputparams_.append(float(Threshs[id][3]))
+        #print(inputparams_)
         inputparams_.append(l[0])
         inputparams_.append(l[1])
-        inp = np.array(inputparams_)
+
+        #print(inputparams_)
+        #print(inputparams_)
         inputparams_ = matlab.double([inputparams_])
         agg_cost.append(eng.getBoolCost_cts_arabid2lp(inputparams_,gates,dataLD,dataDD,lightForcingLD,lightForcingDD,nargout=1))
-        inputparams_ = list(inp)
+        inputparams_ = inp
+        #print(inputparams_)
     #min_val = min(agg_cost)
     #min_index = agg_cost.index(min_val)   
     avr_cost = np.mean(agg_cost)
+    print(avr_cost)
     return avr_cost
 
 def arabid2lp(inputparams):
     for i in inputparams:
-        if (inputparams[0] + inputparams[2] < 24) :
-            if (inputparams[1] + inputparams[3] < 24):
-                cost=arabid2lp_costf(inputparams)
-            else:
-                dist = inputparams[1] + inputparams[3] - 24
-                cost = dist + arabid2lp_costf(inputparams)
-        else:
-            if (inputparams[1] + inputparams[3] < 24):
-                dist = (inputparams[0] + inputparams[2] - 24)
-                cost = dist + arabid2lp_costf(inputparams)
-            else:
-                dist = inputparams[1] + inputparams[3] - 24 + inputparams[0] + inputparams[2] - 24
-                cost = dist + arabid2lp_costf(inputparams)
-    return cost
+        dist = []
+        if (inputparams[0] + inputparams[1] + inputparams[2] >= 24) :
+            dist.append(inputparams[0] + inputparams[1] + inputparams[2] - 23.5)
+            
+        if inputparams[4] + inputparams[5] >= 24:
+            dist.append(inputparams[4] + inputparams[5] - 23.5)
+            
+        if inputparams[1] + inputparams[2] + inputparams[3] + inputparams[5] >= 24:
+            dist.append(inputparams[1] + inputparams[2] + inputparams[3] + inputparams[5] - 23.5)  
+        
+        distance = sum(dist)
+        cost = arabid2lp_costf(inputparams) + distance
+            
+    return cost     #i
 
-
-
+#arabid2lp(init_simplex[0])        
 #%%
 
 def optima_merge(keys, basin, threshold):
@@ -179,131 +190,134 @@ def update_nodes(xvals_list, fvals_post , fvals_list, nodes_list, threshold):
 
 #%%
 # NM -- Find LO through NM runs
-for i in range(len(152,156):
-    for count in range(30):           
-               
-        gate = gatesm[i]
-        savename = f"{gate}"
-        nonzdelt = 0.5
-        zdelt = 0.00025/0.5
-        ndim =11
-        st = {}
-        threshold = 10e-1
-        fvals = []
-        xvals = []
-        permutations = (( np.arange(2**ndim).reshape(-1, 1) & (2**np.arange(ndim))) != 0).astype(int)
-        permutations[permutations==0] = -1
-        step = np.eye(ndim) * nonzdelt
-        #p ={}
-        
-        rep = 100
-        #start = {}
-        for j in range(rep):
-            start_time = time.time()
+for y in range(152,153):
+    gate = gatesm[y]
+    savename = f"{gate}"
+    rep = 10
+    ndim =11
+    init_sol = np.empty([rep,ndim])
+    nonzdelt = 0.5
+    zdelt = 0.00025/0.5  
+    st = {}
+    threshold = 10e-1
+    fvals = []
+    xvals = []
+    permutations = (( np.arange(2**ndim).reshape(-1, 1) & (2**np.arange(ndim))) != 0).astype(int)
+    permutations[permutations==0] = -1
+    step = np.eye(ndim) * nonzdelt
+    #p ={}
+
+    #start = {}
+    for j in range(rep):
+        start_time = time.time()
+        for i in range(1,7):
+            globals()['x_%s' % i]  = random.uniform(0,24)
+        for i in range(7,10):
+            globals()['x_%s' % i]  = random.uniform(0,12)      
+        for i in range(10,12):
+            globals()['x_%s' % i]  = random.uniform(0,4)  
+        while any([ x_1+ x_2 +x_3 >= 24, x_5 + x_6 >= 24, x_2 + x_3 + x_4 + x_6 >= 24 ]):
             for i in range(1,7):
                 globals()['x_%s' % i]  = random.uniform(0,24)
             for i in range(7,10):
-                globals()['x_%s' % i]  = random.uniform(0,12)      
+                globals()['x_%s' % i]  = random.uniform(0,12)    
             for i in range(10,12):
                 globals()['x_%s' % i]  = random.uniform(0,4)  
-            while any([ x_1+ x_2 +x_3 >= 24, x_5 + x_6 >= 24, x_2 + x_3 + x_4 + x_6 >= 24 ]):
-                for i in range(1,7):
-                    globals()['x_%s' % i]  = random.uniform(0,24)
-                for i in range(7,10):
-                    globals()['x_%s' % i]  = random.uniform(0,12)    
-                for i in range(10,12):
-                    globals()['x_%s' % i]  = random.uniform(0,4)  
-        
-            init_sol = [globals()['x_%s' % i] for i in range(1,12) ] 
-            #start[j]= init_sol
-            init_simplex = np.zeros((ndim+1, ndim))
-            init_simplex[0] = np.array(init_sol)
-            init_simplex[init_simplex==0] = zdelt
-            init_simplex[1:] = init_simplex[0] +  init_simplex[0]*permutations[0].reshape(-1,1)* step
-            #I[id] = init_simplex[0]
-            OptimizeResult = minimize(arabid2lp, init_simplex[0], method='nelder-mead',
-                                  options={'initial_simplex': init_simplex, 'xatol': 1e-8, 'disp': False})
-            xvals.append(OptimizeResult.x)
-            fvals.append(OptimizeResult.fun)
-            st[j] = init_simplex
-            #st[j] = init_simplex
-            print("--- %s seconds ---" % (time.time() - start_time))
-        st = optima_merge(xvals, st, threshold)
-        #print('st: ', st)
-        
-        # create the initial list of nodes
-        nodes_list = [xvals[k] for k,v in st.items()]
-        fvals_list = [fvals[k] for k,v in st.items()]
-        fvals_list = [round(num, 12) for num in fvals_list]
-        st_list= []
-        for i,k in st.items():
-            st_list.append(len(k))
-        opt = np.column_stack((fvals_list, nodes_list,st_list))
-        opt = opt[np.argsort(opt[:, 0])]
-        fvals_list = opt[:,0]
-        nodes_list = opt[:,1:ndim+1]
-        st_list = opt[:,ndim+1]
-        fvals_list = list(fvals_list)
-        nodes_list = list(nodes_list)
-        st_list = list(st_list)
-        
-        
-        with open("actual_LONs/prev_nodes_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
-         pickle.dump(nodes_list, fp)
-        
-        with open("actual_LONs/st_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
-         pickle.dump(global_edges, fp)
-        
-        #%%
-        
-        
-        
-        global_edges = []
-        nonzdelt = 0.5
-        step = np.eye(ndim) * nonzdelt
-        for p in range(len(nodes_list)):
-            start_time = time.time()
-            xvals_post = []
-            fvals_post = []
-            init_simplex = np.zeros((ndim+1, ndim))
-            init_simplex[0] = nodes_list[p]
-            for i in range(2**ndim):
-                init_simplex[1:] = init_simplex[0] + init_simplex[0]*permutations[i].reshape(-1,1)* step
-                OptimizeResult = minimize(arabid2lp, nodes_list[p], method='nelder-mead',
-                                          options={'initial_simplex': init_simplex, 'xatol': 1e-8,'fatol': 1e-13})
-                xvals_post.append(OptimizeResult.x)
-                fvals_post.append(OptimizeResult.fun)
-        
-            edge_indices = update_nodes(xvals_post, fvals_post, fvals_list, nodes_list, threshold)
-            uniqe_edge_indices = list(set(edge_indices))
-            count = [edge_indices.count(elem) for elem in uniqe_edge_indices] # to ensure edge indices are unique
-            local_edges = [(p, idx, count[j]* 1/(2**ndim)) for j,idx in enumerate(uniqe_edge_indices)] #* 1/((2**ndim)*len(nodes_list))
-            nm= np.array(local_edges)
-            weight = nm[:,2]
-            norm_weight = [float(l)/sum(weight) for l in weight]
-            for e,w in enumerate(local_edges):
-                w = list(w)
-                w[2]= norm_weight[e]
-                w= tuple(w)
-                local_edges[e]=w
-                print(local_edges)
-            global_edges = global_edges + local_edges
-            print("--- %s seconds ---" % (time.time() - start_time))
-        
-        
-        print('nodes_list length is: ', len(nodes_list))
-        print('created edges: ', global_edges)
-        print('fvals: ', fvals_list)
-        
-        
-        
-        
-        with open("actual_LONs/nodes_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
-         pickle.dump(nodes_list, fp)
-        
-        with open("actual_LONs/global_edges_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
-         pickle.dump(global_edges, fp)
-        
-        with open("actual_LONs/fvals_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
-         pickle.dump(fvals_list, fp)
-        
+    
+        init_sol = [globals()['x_%s' % t] for t in range(1,12) ] 
+        #start[j]= init_sol
+        init_simplex = np.zeros((ndim+1, ndim))
+        init_simplex[0] = np.array(init_sol)
+        init_simplex[init_simplex==0] = zdelt
+        init_simplex[1:] = init_simplex[0] +  init_simplex[0]*permutations[0].reshape(-1,1)* step
+        #print(init_simplex)
+        print('s')
+        #I[id] = init_simplex[0]
+        OptimizeResult = minimize(arabid2lp,init_simplex[0], method='nelder-mead',
+                              options={'initial_simplex': init_simplex, 'fatol': 1e-3, 'disp': True})
+
+        print('e')
+        xvals.append(OptimizeResult.x)
+        fvals.append(OptimizeResult.fun)
+        st[j] = init_simplex
+        #st[j] = init_simplex
+        print("--- %s seconds ---" % (time.time() - start_time))
+    st = optima_merge(xvals, st, threshold)
+    #print('st: ', st)
+    
+    # create the initial list of nodes
+    nodes_list = [xvals[k] for k,v in st.items()]
+    fvals_list = [fvals[k] for k,v in st.items()]
+    fvals_list = [round(num, 12) for num in fvals_list]
+    st_list= []
+    for i,k in st.items():
+        st_list.append(len(k))
+    opt = np.column_stack((fvals_list, nodes_list,st_list))
+    opt = opt[np.argsort(opt[:, 0])]
+    fvals_list = opt[:,0]
+    nodes_list = opt[:,1:ndim+1]
+    st_list = opt[:,ndim+1]
+    fvals_list = list(fvals_list)
+    nodes_list = list(nodes_list)
+    st_list = list(st_list)
+    
+    
+    with open("actual_LONs/prev_nodes_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
+     pickle.dump(nodes_list, fp)
+    
+    with open("actual_LONs/st_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
+     pickle.dump(global_edges, fp)
+    
+    #%%
+    
+    
+    
+    global_edges = []
+    nonzdelt = 0.5
+    step = np.eye(ndim) * nonzdelt
+    for p in range(len(nodes_list)):
+        start_time = time.time()
+        xvals_post = []
+        fvals_post = []
+        init_simplex = np.zeros((ndim+1, ndim))
+        init_simplex[0] = nodes_list[p]
+        for i in range(2**ndim):
+            init_simplex[1:] = init_simplex[0] + init_simplex[0]*permutations[i].reshape(-1,1)* step
+            OptimizeResult = minimize(arabid2lp, nodes_list[p], method='nelder-mead',
+                                      options={'initial_simplex': init_simplex, 'xatol': 1e-8,'fatol': 1e-13})
+            xvals_post.append(OptimizeResult.x)
+            fvals_post.append(OptimizeResult.fun)
+    
+        edge_indices = update_nodes(xvals_post, fvals_post, fvals_list, nodes_list, threshold)
+        uniqe_edge_indices = list(set(edge_indices))
+        count = [edge_indices.count(elem) for elem in uniqe_edge_indices] # to ensure edge indices are unique
+        local_edges = [(p, idx, count[j]* 1/(2**ndim)) for j,idx in enumerate(uniqe_edge_indices)] #* 1/((2**ndim)*len(nodes_list))
+        nm= np.array(local_edges)
+        weight = nm[:,2]
+        norm_weight = [float(l)/sum(weight) for l in weight]
+        for e,w in enumerate(local_edges):
+            w = list(w)
+            w[2]= norm_weight[e]
+            w= tuple(w)
+            local_edges[e]=w
+            print(local_edges)
+        global_edges = global_edges + local_edges
+        print("--- %s seconds ---" % (time.time() - start_time))
+    
+    
+    print('nodes_list length is: ', len(nodes_list))
+    print('created edges: ', global_edges)
+    print('fvals: ', fvals_list)
+    
+    
+    
+    
+    with open("actual_LONs/nodes_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
+     pickle.dump(nodes_list, fp)
+    
+    with open("actual_LONs/global_edges_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
+     pickle.dump(global_edges, fp)
+    
+    with open("actual_LONs/fvals_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
+     pickle.dump(fvals_list, fp)
+    

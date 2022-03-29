@@ -85,6 +85,13 @@ with open("Desktop/Llyonesse/Neuro_1lp_res/cont/x_NMMSO_0_cont.txt", "rb") as fp
     x_NMMSO_0 = pickle.load(fp)  
 with open("Desktop/Llyonesse/Neuro_1lp_res/cont/f_NMMSO_0_cont.txt", "rb") as fp:   
     f_NMMSO_0 = pickle.load(fp)  
+######################################################################
+
+x_NMMSO_1[21]
+f_NMMSO_1[21]
+x_NMMSO_1[18]
+f_NMMSO_1[18]
+
     
 ######################################################################  NMMSO bar chart    
 

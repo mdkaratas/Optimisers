@@ -30,9 +30,9 @@ path= r"/Users/melikedila/Documents/GitHub/BDEtools/code"
 eng.addpath(path,nargout= 0)
 path= r"/Users/melikedila/Documents/GitHub/BDEtools/unit_tests"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost functions"
+path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost functions/neuro1lp_costfcn"
+path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions/neuro1lp_costfcn"
 eng.addpath(path,nargout= 0)
 path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions/costfcn_routines"
 eng.addpath(path,nargout= 0)
@@ -68,7 +68,7 @@ def neuro1lp_gates(inputparams,gates):
     inputparams = list(inputparams)
     inputparams = matlab.double([inputparams])
     gates = matlab.double([gates])
-    cost=eng.getBoolCost_neuro1lp(inputparams,gates,dataLD,dataDD,lightForcingLD,lightForcingDD,nargout=1)
+    cost=eng.getBoolCost_cts_neuro1lp(inputparams,gates,dataLD,dataDD,lightForcingLD,lightForcingDD,nargout=1)
     return cost
 
 cma_lb = np.array([0,0,0,0,0], dtype='float')

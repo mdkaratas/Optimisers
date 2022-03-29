@@ -73,6 +73,166 @@ lightForcingLD=lightForcingLD['lightForcingLD']
 lightForcingDD=lightForcingDD['lightForcingLL']
 
 
+############################################################################################################################################################################
+read_root = 'Desktop/MI/'
+
+with open(read_root + "design_dict_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    design_dict_NMMSO_MI = pickle.load(fp)   
+with open(read_root + "f_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:   
+    f_CMAES_MI = pickle.load(fp)
+with open(read_root + "f_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    f_NMMSO_MI= pickle.load(fp)   
+with open(read_root + "fit_dict_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    fit_dict_NMMSO_MI = pickle.load(fp)  
+with open(read_root + "given_x_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:   
+    given_x_CMAES_MI= pickle.load(fp)   
+with open(read_root + "given_x_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    given_x_NMMSO_MI = pickle.load(fp)
+with open(read_root + "trace_f_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:   
+    trace_f_CMAES_MI = pickle.load(fp)   
+with open(read_root + "trace_f_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    trace_f_NMMSO_MI = pickle.load(fp)          
+with open(read_root + "x_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:   
+    x_CMAES_MI = pickle.load(fp)   
+with open(read_root + "x_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    x_NMMSO_MI = pickle.load(fp)
+with open(read_root + "x_to_cost_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:   
+    x_to_cost_CMAES_MI = pickle.load(fp)   
+with open(read_root + "x_to_cost_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
+    x_to_cost_NMMSO_MI = pickle.load(fp)  
+############################################################################################################################################################################
+#freq
+
+for k in range(256):
+    globals()['gate_%s' % k] = []
+    globals()['f_g%s' % k] = []
+    gate = gatesm[k]
+    for j,i in enumerate(x_CMAES_MI):
+        if i[15:24] == gate:
+            globals()['gate_%s' % k].append(i)
+            globals()['f_g%s' % k].append(f_CMAES_MI[j])
+    # for j,i in enumerate(x_CMAES_MI):
+    #     if i[8:19] == gate:
+    #         globals()['gate_%s' % k].append(i)
+    #         globals()['f_g%s' % k].append(f_CMA_MI[j])
+            
+x  = []  
+y = []   
+for k in range(256): 
+   x.append(str(k))  
+   y.append(len(globals()['gate_%s' % k]))
+            
+opt = np.column_stack((x, y))
+opt = opt[np.argsort(opt[:, 1])]
+x = opt[:,0]
+y = list(opt[:,1])
+
+X = []
+for i in x:
+    X.append(str(i))   
+Y = []
+for i in y:
+    Y.append(int(i))     
+y = Y
+
+x_list,y_list = [], []
+for i in range(256):
+    x_list.append(x[255-i])
+    y_list.append(y[255-i])
+    
+x_list = x_list[0:100]
+y_list = y_list[0:100]
+
+fig, axes = plt.subplots(figsize=(7,5), dpi=100)
+plt.ylabel('frequency',fontsize=20)
+plt.xlabel('gates',fontsize=20)
+plt.ylim((0,50))
+plt.yticks(np.arange(min(y), 51, 2.0),fontsize=7)
+plt.xticks(fontsize=5,rotation=90)
+bar = plt.bar(x_list, height=y_list,color= 'royalblue')
+bar[0].set_color('purple')
+plt.title('CMA-ES: MI',fontsize=25)
+plt.savefig('Desktop/CMA_ES_MI_frequency.eps', format='eps',bbox_inches='tight')
+
+
+
+
+
+
+
+###
+
+
+for k in range(256):
+    gate = gatesm[k]
+    globals()['gate_%s' % k] = []
+    globals()['f_g%s' % k] = []
+
+#a =[11.0, 6.0, 2.0, 1.0, 11.0, 2.0, 10.0, 5.0, 1.5861735045618337, 0.8212703758320038, 0.13895538388844852, 0.9904224770196597, 0.8685118175928863, 0.0018412457802242245, 3.984895340248584, 0.776964366397019, 0.005963156027925716, 0.0022028810948015844, 0.9998369257303865, 0.26059354845544813, 0.4040223744744524, 0.259160774003397, 0.35049207585479064]
+for i in range(8):
+    inputparams[i] = round(inputparams[i]) 
+    for j,i in enumerate(x_CMA_MI):
+        if i[15:24] == gate:
+            globals()['gate_%s' % k].append(i)
+            globals()['f_g%s' % k].append(f_CMA_MI[j])
+            
+x  = []  
+y = []   
+for k in range(256): 
+   x.append(str(k))  
+   y.append(len(globals()['gate_%s' % k]))
+            
+opt = np.column_stack((x, y))
+opt = opt[np.argsort(opt[:, 1])]
+x = opt[:,0]
+y = list(opt[:,1])
+
+X = []
+for i in x:
+    X.append(str(i))   
+Y = []
+for i in y:
+    Y.append(int(i))     
+y = Y
+
+x_list,y_list = [], []
+for i in range(32):
+    x_list.append(x[31-i])
+    y_list.append(y[31-i])
+    
+x_list = x_list[0:11]
+y_list = y_list[0:11]
+
+fig, axes = plt.subplots(figsize=(7,5), dpi=100)
+plt.ylabel('frequency',fontsize=20)
+plt.xlabel('gates',fontsize=20)
+plt.ylim((0,31))
+plt.yticks(np.arange(min(y), 31, 2.0),fontsize=15)
+plt.xticks(fontsize=12,rotation=90)
+bar = plt.bar(x_list, height=y_list,color= 'royalblue')
+bar[1].set_color('purple')
+plt.title('CMA-ES: MI',fontsize=25)
+plt.savefig('Desktop/cont_figs/CMA_ES_MI_frequency_2lp.eps', format='eps',bbox_inches='tight')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #############################################  CMA MI
 

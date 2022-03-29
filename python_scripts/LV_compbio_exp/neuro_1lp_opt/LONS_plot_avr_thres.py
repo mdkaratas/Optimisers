@@ -15,7 +15,7 @@ from plotly.offline import plot
 from plotly.subplots import make_subplots
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-
+from sklearn.decomposition import PCA
 
 
 ###############################################################################  neuro1lp LON data
@@ -55,6 +55,13 @@ with open("Desktop/actual_LONs/nodes_list_G3_100s.txt", "rb") as fp:
 f_list = f_vals_0
 nodes_list = nodes_list_G0
 global_edges = global_edges_0
+############  PCA for x axes layout
+
+pca = PCA(1)  # project from 64 to 2 dimensions
+projected_G0 = pca.fit_transform(nodes_list_G0)
+list_of_floats = [float(item) for item in projected_G0]
+######################
+
 
 
 bs = {}
@@ -68,15 +75,19 @@ for i in range(len(f_list)):
     
 bs_n = []
 for k,v in bs.items():
-    bs_n.append(5*v)
+    bs_n.append(5*v+1)
 posx = [elem[0] for i,elem in enumerate(nodes_list)]
 posy = [elem[1] for i,elem in enumerate(nodes_list)]
 posz = [f_list[i] for i,elem in enumerate(nodes_list)]
 
+# pos = {}
+# for i in range(len(posx)):
+#     pos[i] = (posx[i],posz[i])
+ 
 pos = {}
 for i in range(len(posx)):
-    pos[i] = (posx[i],posz[i])
-  
+    pos[i] = (list_of_floats[i],posz[i])
+      
     
 edge_width = []
 for i in global_edges:
@@ -132,32 +143,7 @@ plt.savefig('Desktop/LON_3.eps', format='eps',bbox_inches='tight')
 
 
 
-
-############################################################################################
-
-
-
-
-#############################################################################################    
-
-
-    
-bs = {}
-for i in range(len(f_vals_1)):
-    #print(i[1])
-    c = 0
-    for j in global_edges_1:
-        if (j[1] == i):
-            c+= 1
-    bs[i] = c
-
-        
-
-    
-    
- 
-    
- 
+########################################################################################
 ###############################################################################  3D LONs   g= 01
 
 f = f_vals_1
@@ -322,3 +308,154 @@ for y in range(len(global_edges)):
     G.add_edge(global_edges[y][0],global_edges[y][1],weight= 5*global_edges[y][2]) 
 fig = plt.figure(figsize=(3,3),dpi=5000,facecolor='white')     
 nx.draw_networkx(G, arrows=True,**options, with_labels =False)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################
+############
+
+
+f_list = f_vals_0
+nodes_list = nodes_list_G0
+global_edges = global_edges_0
+
+opt = np.column_stack((f_list, nodes_list,st_list))
+opt = opt[np.argsort(opt[:, 0])]
+fvals_list = opt[:,0]
+nodes_list = opt[:,1:ndim+1]
+
+
+############  PCA for x axes layout
+
+pca = PCA(1)  # project from 64 to 2 dimensions
+projected_G0 = pca.fit_transform(nodes_list_G0)
+list_of_floats = [float(item) for item in projected_G0]
+
+######################  sorting all nodes- rearranging edges
+id_list = [x for x in range(len(f_list))]
+opt = np.column_stack((f_list, nodes_list,st_list))
+
+
+
+#################
+
+
+
+bs = {}
+for i in range(len(f_list)):
+    #print(i[1])
+    c = 0
+    for j in global_edges:
+        if (j[1] == i):
+            c+= 1
+    bs[i] = c
+    
+bs_n = []
+for k,v in bs.items():
+    bs_n.append(5*v+1)
+posx = [elem[0] for i,elem in enumerate(nodes_list)]
+posy = [elem[1] for i,elem in enumerate(nodes_list)]
+posz = [f_list[i] for i,elem in enumerate(nodes_list)]
+
+pos = {}
+for i in range(len(posx)):
+    pos[i] = (list_of_floats[i],posz[i])
+      
+    
+edge_width = []
+for i in global_edges:
+    edge_width.append(0.6*i[2])
+
+G = nx.MultiDiGraph()
+
+network_nodes = [(i, {'style':'filled', 'posx': posx[i], 'posy':posy[i], 'posz': posz[i]\
+                      }) for i in np.arange(len(nodes_list))]
+#pos = [(elem[1], fvals_list[i]) for i,elem in enumerate(nodes_list)]
+#pos_dict={}
+#for t in range(len(nodes_list)):
+    #os_dict[t]= pos[t]
+G.add_nodes_from(network_nodes)
+
+for y in range(len(global_edges)):
+    G.add_edge(global_edges[y][0],global_edges[y][1],weight= 15*global_edges[y][2]) 
+# Create the graph
+fig = plt.figure(figsize=(3,3),dpi=5000,facecolor='white') 
+plt.axis('off')
+
+
+ff= np.sort(f)
+
+def colorFader(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
+    c1=np.array(mpl.colors.to_rgb(c1))
+    c2=np.array(mpl.colors.to_rgb(c2))
+    return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
+
+c1='#0A0AAA' #blue
+c2= '#38eeff' #0080ff' # '#4c4cff' #'#5050F0'
+n=len(f_vals_1)
+node_color= ['#FF0000' if(i==min(f)) else colorFader(c1,c2,i/n) for i in f]
+
+options = {
+    'node_color': node_color,
+    'node_size': bs_n,
+    'width': edge_width,
+    'arrowstyle': '-|>',   ### MI run ettiginde farkli gateler icin kullan
+    'edge_color' :'gray','arrowsize': 6,
+    'pos' : pos
+    #,'edge_curved': 0.2
+}
+
+
+
+nx.draw_networkx(G,arrows=True, **options,with_labels =False,connectionstyle = 'arc3') #,connectionstyle = 'arc3'l
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
