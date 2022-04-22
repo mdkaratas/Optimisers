@@ -287,6 +287,10 @@ pred = pred.detach().numpy()
 
 plt.plot(x_test,y_test,'r',label ='Sine')
 plt.plot(x_test,pred,'b',label ='cosine')
+plt.xlabel("Test data")
+plt.ylabel("Predictions")
+plt.xlim([-0.1, 1.2])
+plt.ylim([-0.1, 1.2])
 plt.axis('equal')
   
 plt.show()
