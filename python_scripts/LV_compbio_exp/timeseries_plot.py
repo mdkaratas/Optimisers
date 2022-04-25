@@ -22,18 +22,19 @@ eng = matlab.engine.start_matlab()
 #%%  
 
 # Set required paths
+root = '/Users/mkaratas/Desktop/GitHub/'
 
-path= r"/Users/melikedila/Documents/GitHub/BDEtools/code"
+path= root + r"/BDEtools/code"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDEtools/unit_tests"
+path= root + r"/BDEtools/unit_tests"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions"
+path= root + r"/BDE-modelling/Cost_functions"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions/neuro1lp_costfcn"
+path= root + r"/BDE-modelling/Cost_functions/neuro1lp_costfcn"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDE-modelling/Cost_functions/costfcn_routines"
+path= root + r"/BDE-modelling/Cost_functions/costfcn_routines"
 eng.addpath(path,nargout= 0)
-path= r"/Users/melikedila/Documents/GitHub/BDEtools/models"
+path= root + r"/BDEtools/models"
 eng.addpath(path,nargout= 0)
 
 
@@ -159,7 +160,7 @@ plt.savefig('Desktop/neuro1lp_timeseries_normalised_DD.eps', format='eps',bbox_i
     
 ##################################  Obtaining dat and sol when inputparams given to the function
 #####   !) Read all data
-read_root = "Desktop/Llyonesse/continuous_fcn_results/"
+read_root = "Desktop/GitHub/Optimisers/Llyonesse/continuous_fcn_results/"
 model_list = {"neuro1lp":2,"neuro2lp": 5, "arabid2lp":8}
 optimisers = ["CMAES","NMMSO"]
 #optimisers = ["NMMSO"]
@@ -177,7 +178,7 @@ for model, n_gates in model_list.items():
             with open(read_root + model + "/design_dict_%s_MI_%s_cts.txt"% (opt,model), "rb") as fp:   
                 globals()['design_dict_MI_%s_%s' % (opt,model)] = pickle.load(fp)           
         gatesm = list(map(list, itertools.product([0, 1], repeat=n_gates)))      
-        for gate in gatesm: #[3:5]
+        for gate in gatesm[172:256]: #[3:5]
             with open(read_root + model + f"/x_%s_%s_%s_cts.txt"%(opt,gate,model), "rb") as fp:   
                 globals()[f'x_%s_%s_%s' % (opt,model,gate)] = pickle.load(fp) 
             with open(read_root + model + f"/f_%s_%s_%s_cts.txt"%(opt,gate,model), "rb") as fp:   
