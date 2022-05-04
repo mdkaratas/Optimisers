@@ -173,29 +173,33 @@ gatesm = list(map(list, itertools.product([0, 1], repeat=n)))
 gate = gatesm[6]
 savename = f"{gate}"
 
-gate_1g = globals()['x_CMAES_%s' % savename]
-f = globals()['f_CMAES_%s' % savename]
+gate_1g = globals()[f'x_%s_%s_%s' % (model,f"neuro2lp",gate)]
+f = globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)]
 
 f = []
 
-for i in globals()['f_CMAES_%s' % savename]:
+for i in globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)]:
     f.append(i)
-for i in globals()['f_NMMSO_%s' % savename]:
+for i in globals()[f'f_%s_%s_%s' % ("NMMSO",f"neuro2lp",gate)]:
     f.append(i)
 f = sorted(f)
 norm = colors.Normalize(0,6) #(min(f), max(f)) ...   #### colorbari degistirince burayi da degistir !!
 colours = cm.RdBu(norm(f))  # div
     
-for i in range(len(globals()['f_CMAES_%s' % savename])):        
-    if globals()['f_CMAES_%s' % savename][i]==f[f.index(globals()['f_CMAES_%s' % savename][i])]:
-        c1.append(colours[f.index(globals()['f_CMAES_%s' % savename][i])])   
-for i in range(len(globals()['f_NMMSO_%s' % savename])):        
-    if globals()['f_NMMSO_%s' % savename][i]==f[f.index(globals()['f_NMMSO_%s' % savename][i])]:
-        c2.append(colours[f.index(globals()['f_NMMSO_%s' % savename][i])])   
+for i in range(len(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)])):        
+    if globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i]==f[f.index(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i])]:
+        c1.append(colours[f.index(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i])])   
+for i in range(len(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)])):        
+    if globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i]==f[f.index(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i])]:
+        c2.append(colours[f.index(globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)][i])])   
 
 
 
 ###  plot  CMAES
+
+model = "CMAES"   # "NMMSO"# 
+
+
 ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 12, '$τ_4$':24, '$τ_5$':12,'$T_1$' :1,'$T_2$' : 1,'$T_3$' :1}
 lb = {'$τ_1$':0,'$τ_2$' : 0,'$τ_3$' : 0, '$τ_4$':0, '$τ_5$':0,'$T_1$' :0,'$T_2$' : 0, '$T_3$' :0}
 
@@ -216,7 +220,8 @@ t2 =[]
 t3 =[]
 t4 =[]
 t5 =[]
-for i in globals()['x_CMAES_%s' % savename]:
+for i in globals()[f'x_%s_%s_%s' % (model,f"neuro2lp",gate)]:
+    print(i)
     t1.append(i[0])
     t2.append(i[1])
     t3.append(i[2])
@@ -227,7 +232,7 @@ for i in globals()['x_CMAES_%s' % savename]:
     T3.append(i[7])
     
 data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
-        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,'Fitness': globals()['f_CMAES_%s' % savename]} 
+        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,'Fitness': globals()[f'f_%s_%s_%s' % (model,f"neuro2lp",gate)]} 
 df = pd.DataFrame(data)
 cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$T_1$','$T_2$','$T_3$']
 x = [i for i, _ in enumerate(cols)]
@@ -279,7 +284,7 @@ cb.ax.tick_params(labelsize=17)
 #plt.title("g = 01")  
 matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
 #matplotlib.rc('ytick', labelsize=30)
-plt.savefig('Desktop/Figs_neuro2lp/CMAES_GG_6_pcp_naxes.eps', format='eps',bbox_inches='tight')
+#plt.savefig('Desktop/Figs_neuro2lp/CMAES_GG_6_pcp_naxes.eps', format='eps',bbox_inches='tight')
 plt.show()    
 
 

@@ -38,7 +38,7 @@ gatesm = list(map(list, itertools.product([0, 1], repeat=n)))  ## alttaki de ayn
 #%%  
 
 # Set required paths
-root = '/Users/melikedila/Documents/GitHub/'
+root = '/Users/mkaratas/Desktop/GitHub/'
 
 path= root + r"/BDEtools/code"
 eng.addpath(path,nargout= 0)
@@ -68,12 +68,13 @@ lightForcingDD = eng.load('lightForcingLL.mat')
 # Convert data to be used by MATLAB
 
 dataLD = dataLD['dataLD']
-dataDD = dataDD['dataLL']
+dataLL = dataDD['dataLL']
 lightForcingLD=lightForcingLD['lightForcingLD']
-lightForcingDD=lightForcingDD['lightForcingLL']
+lightForcingLL=lightForcingDD['lightForcingLL']
 
 
 ############################################################################################################################################################################
+#%%
 read_root = 'Desktop/MI/'
 
 with open(read_root + "design_dict_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
@@ -100,6 +101,7 @@ with open(read_root + "x_to_cost_CMAES_MI_cts_arabid2lp.txt", "rb") as fp:
     x_to_cost_CMAES_MI = pickle.load(fp)   
 with open(read_root + "x_to_cost_NMMSO_MI_cts_arabid2lp.txt", "rb") as fp:   
     x_to_cost_NMMSO_MI = pickle.load(fp)  
+    #%%
 ############################################################################################################################################################################
 #freq
 

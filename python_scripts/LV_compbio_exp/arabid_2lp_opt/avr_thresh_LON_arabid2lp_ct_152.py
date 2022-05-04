@@ -76,33 +76,10 @@ num_T = 4   # number of thresholds
 samples_T = 10
 Threshs = lhs(num_T, samples=samples_T)
 Threshs = list(Threshs)
+Threshs = [0.202582,0.358257,0.512238,0.200218]
 #agg_x =[] 
 #%%
 
-def arabid2lp_costf(inputparams):
-    #print(inputparams[3])
-    agg_cost =[]
-    gates = gate
-    gates = matlab.double([list(gates)])
-    #agg_x.append(inputparams)
-    l = inputparams[9:11]
-    inputparams_ = inputparams[0:9]
-    inputparams_ = list(inputparams_)
-    for id in range(len(Threshs)):
-        inputparams_.append(float(Threshs[id][0])) # add thresholds here 
-        inputparams_.append(float(Threshs[id][1]))
-        inputparams_.append(float(Threshs[id][2]))
-        inputparams_.append(float(Threshs[id][3]))
-        inputparams_.append(l[0])
-        inputparams_.append(l[1])
-        inp = np.array(inputparams_)
-        inputparams_ = matlab.double([inputparams_])
-        agg_cost.append(eng.getBoolCost_cts_arabid2lp(inputparams_,gates,dataLD,dataDD,lightForcingLD,lightForcingDD,nargout=1))
-        inputparams_ = list(inp)
-    #min_val = min(agg_cost)
-    #min_index = agg_cost.index(min_val)   
-    avr_cost = np.mean(agg_cost)
-    return avr_cost
 
 def arabid2lp(inputparams):
     for i in inputparams:
@@ -180,7 +157,7 @@ def update_nodes(xvals_list, fvals_post , fvals_list, nodes_list, threshold):
 
 #%%
 # NM -- Find LO through NM runs
-rep = 5
+rep = 1
 ndim =11
 init_sol = np.empty([rep,ndim])
 gate = gatesm[152]
@@ -263,8 +240,35 @@ with open(write_root+ "st_list_ara2lp_{savename}_100s%s.txt"%count, "wb") as fp:
     
     #%%
     
-    
-    
+
+
+
+nodes_list = [[1.929988108996469, 10.44137860271575, 6.92009693208376, 0.8024274933673246, 3.5612928023037993, 0.43980497478591607, 4.156873340660776, 1.9198962862025049, 11.456170371284067, 0.7261346449348132, 3.7422201192929814] ,
+              [4.043254579630346, 3.1175813399032317, 8.065775206181085, 2.6625843984393636, 11.578394020226847, 6.00159117146294, 5.983404171941851, 3.1059012465294016, 9.941726853850668, 3.5846971525549947, 2.667872749891422]]    
+
+def arabid2lp_costf(inputparams):
+    gates = gate
+    gates = matlab.double([list(gates)])
+    #agg_x.append(inputparams)
+    l = inputparams[9:11]
+    inputparams_ = inputparams[0:9]
+    inputparams_ = list(inputparams_)
+    inputparams_.append(float(Threshs[0])) # add thresholds here 
+    inputparams_.append(float(Threshs[1]))
+    inputparams_.append(float(Threshs[2]))
+    inputparams_.append(float(Threshs[3]))
+    inputparams_.append(l[0])
+    inputparams_.append(l[1])
+    inp = np.array(inputparams_)
+    inputparams_ = matlab.double([inputparams_])
+    avr_cost = eng.getBoolCost_cts_arabid2lp(inputparams_,gates,dataLD,dataDD,lightForcingLD,lightForcingDD,nargout=1)
+    return avr_cost
+
+
+
+
+ 
+
 global_edges = []
 nonzdelt = 0.5
 step = np.eye(ndim) * nonzdelt
@@ -278,6 +282,58 @@ for p in range(len(nodes_list)):
     par_start_time = time.time()
     simplex_subs = init_simplex[0] + (init_simplex[0] * np.expand_dims(permutations, axis=-1)) * step
     simplex0 = np.repeat(np.expand_dims(np.expand_dims(init_simplex[0], axis=0), axis=0), 2**ndim, axis=0)
+    init_simplices = np.concatenate((simplex0, simplex_subs), axis=1)
+    
+    all_args = [(arabid2lp, init_simplex[0], {'method':'nelder-mead', 'options':{'initial_simplex': simplex, 'xatol': 1e-8,'fatol': 1e-13}}) for simplex in init_simplices]
+    num_cores = min(multiprocessing.cpu_count(), 32)
+    OptimizeResults = Parallel(n_jobs=num_cores, backend="threading")(delayed(minimize)(*args, **kwargs) for *args, kwargs in all_args)
+    xvals_post = [result.x for result in OptimizeResults]
+    fvals_post = [result.fun for result in OptimizeResults]
+    end_time = time.time()
+    print('edge for %s th lo: '%p, time.time() - end_time)
+
+    edge_indices = update_nodes(xvals_post, fvals_post, fvals_list, nodes_list, threshold)
+    uniqe_edge_indices = list(set(edge_indices))
+    count = [edge_indices.count(elem) for elem in uniqe_edge_indices] # to ensure edge indices are unique
+    local_edges = [(p, idx, count[j]* 1/(2**ndim)) for j,idx in enumerate(uniqe_edge_indices)] #* 1/((2**ndim)*len(nodes_list))
+    nm= np.array(local_edges)
+    weight = nm[:,2]
+    norm_weight = [float(l)/sum(weight) for l in weight]
+    for e,w in enumerate(local_edges):
+        w = list(w)
+        w[2]= norm_weight[e]
+        w= tuple(w)
+        local_edges[e]=w
+        print(local_edges)
+    global_edges = global_edges + local_edges
+print("--- %s seconds ---" % (time.time() - start_time))
+
+
+
+
+
+permutations = (( np.arange(2**ndim).reshape(-1, 1) & (2**np.arange(ndim))) != 0).astype(int)
+permutations[permutations==0] = -1
+permut = []
+
+
+for i in range(0,len(permutations),205):
+    permut.append(permutations[i])
+
+   
+global_edges = []
+nonzdelt = 0.5
+step = np.eye(ndim) * nonzdelt
+start_time = time.time()
+for p in range(len(nodes_list)):
+    start_time = time.time()
+    xvals_post = []
+    fvals_post = []
+    init_simplex = np.zeros((ndim+1, ndim))
+    init_simplex[0] = nodes_list[p]
+    par_start_time = time.time()
+    simplex_subs = init_simplex[0] + (init_simplex[0] * np.expand_dims(permut, axis=-1)) * step
+    simplex0 = np.repeat(np.expand_dims(np.expand_dims(init_simplex[0], axis=0), axis=0), len(permut), axis=0)
     init_simplices = np.concatenate((simplex0, simplex_subs), axis=1)
     
     all_args = [(arabid2lp, init_simplex[0], {'method':'nelder-mead', 'options':{'initial_simplex': simplex, 'xatol': 1e-8,'fatol': 1e-13}}) for simplex in init_simplices]
