@@ -9,7 +9,7 @@ Created on Mon Apr 25 09:34:49 2022
 
 
 " This snippet finds the matrix which has sampled threshold combinations in the first 4th columns for 
-  " 2lp Arabidopsis model and max normalised joint entropy for data in the 5th column ""
+  " 1-loop Neurospors model and max normalised joint entropy for data in the 5th column ""
  
 # Importing required libraries    
  

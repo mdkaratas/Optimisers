@@ -5,7 +5,6 @@ Created on Tue Apr 26 14:42:06 2022
 
 @author: mkaratas
 """
-
 import matlab.engine
 import numpy as np
 import cma
@@ -110,20 +109,16 @@ for inputparams in globals()['x_%s_MI_%s' % ("NMMSO","arabid2lp")]:
     for i in range(8):
         inputparams[15+i] = round(inputparams[15+i])
 
-#########################################################################################################  MI frequency plot- barchart
-model =  "NMMSO"  #"CMAES" #  "NMMSO"  #   "NMMSO"  #
-
+###############################################################################################3  - results
+model = "NMMSO"
 for k in range(256):
     gate = gatesm[k]
-    globals()['gate_%s' % k] = []
-    globals()['f_g%s' % k] = []
+    for i in range(len(globals()[f'f_%s_%s_%s' % (model,f"arabid2lp",gate)])):
+        #print(i)
+        globals()[f'f_%s_%s_%s' % (model,f"arabid2lp",gate)][i] = -1 * globals()[f'f_%s_%s_%s' % (model,f"arabid2lp",gate)][i]
 
-    
-    for j,i in enumerate(globals()['x_%s_MI_%s' % ("%s"%model,"arabid2lp")]):   # (opt,model)   ###   ("CMAES","arabid2lp")]):
-        if i[15:23] == gate:     ####  change here for global
-            globals()['gate_%s' % k].append(i)
-            globals()['f_g%s' % k].append(globals()['x_%s_MI_%s' % ("%s"%model,"arabid2lp")][j])
 
+ 
 
 #%%
 ####        Open for MI search trajectories
@@ -140,6 +135,19 @@ with open(read_root + 'arabid2lp/trace_f_CMAES_MI_cts_arabid2lp.txt', "rb") as f
      f_CMAES_MI = pickle.load(fp)       
 with open(read_root + 'arabid2lp/trace_f_NMMSO_MI_cts_arabid2lp.txt', "rb") as fp:   
      f_NMMSO_MI = pickle.load(fp)      
+#########################################################################################################  MI frequency plot- barchart
+model =  "CMAES" # "NMMSO"  #  "NMMSO"  #   "NMMSO"  #
+
+for k in range(256):
+    gate = gatesm[k]
+    globals()['gate_%s' % k] = []
+    globals()['f_g%s' % k] = []
+
+    
+    for j,i in enumerate(globals()['x_%s_MI_%s' % ("%s"%model,"arabid2lp")]):   # (opt,model)   ###   ("CMAES","arabid2lp")]):
+        if i[15:23] == gate:     ####  change here for global
+            globals()['gate_%s' % k].append(i)
+            globals()['f_g%s' % k].append(globals()['x_%s_MI_%s' % ("%s"%model,"arabid2lp")][j])
 
 #%%
 
@@ -183,13 +191,13 @@ plt.ylim((0,31))
 plt.yticks(np.arange(min(y), 31, 2.0),fontsize=15)
 plt.xticks(fontsize=12,rotation=90)
 bar = plt.bar(x_list, height=y_list,color= 'royalblue')
-#bar[1].set_color('purple')
+#bar[14].set_color('purple')
 plt.title('%s: MI'%model,fontsize=25)
 plt.savefig('Desktop/cont_figs/%s_MI_frequency_arabidopsis_2lp.eps'%(model), format='eps',bbox_inches='tight')
 
 
 #########################################################################################################    GG boxplot
-model = "NMMSO"# "CMAES" #"NMMSO"  #"CMAES" # 
+model = "CMAES" #  "NMMSO"# "NMMSO"  #"CMAES" # 
 #data = []
 xlabs = []
 for k in range(256):
@@ -273,9 +281,10 @@ plt.xticks(fontsize=8,rotation=90)
 plt.ylim((0,8.2))
 plt.title("%s:GxG"%model,fontsize=20)
 plt.savefig('Desktop/cont_figs/%s_GG_2lp_boxplt.eps'%model, format='eps',bbox_inches='tight')
-plt.arrow(18, 5, 0, -1, width = 0.2,color = 'red')
-plt.arrow(19, 5, 0, -1, width = 0.2,color = 'red')
-plt.arrow(22, 5, 0, -1, width = 0.2,color = 'red')
+plt.arrow(2, 5, 0, -1, width = 0.2,color = 'red')
+plt.arrow(3, 5, 0, -1, width = 0.2,color = 'red')
+plt.arrow(6, 5, 0, -1, width = 0.2,color = 'red')
+# plt.arrow(22, 5, 0, -1, width = 0.2,color = 'red')
 plt.savefig('Desktop/cont_figs/%s_GG_2lp_boxplt_s1.eps'%model, format='eps',bbox_inches='tight')
 # show plot
 plt.show()
@@ -322,6 +331,7 @@ plt.xticks(fontsize=8,rotation=90)
 plt.ylim((0,8.2))
 plt.title("%s:GxG"%model,fontsize=20)
 #plt.arrow(25, 6, 0, -1, width = 0.2,color = 'red')
+#plt.arrow(25, 5, 0, -1, width = 0.2,color = 'red')
 plt.savefig('Desktop/cont_figs/%s_GG_2lp_boxplt_s3.eps'%model, format='eps',bbox_inches='tight')
 # show plot
 plt.show()
@@ -344,6 +354,7 @@ plt.yticks(fontsize=15)
 plt.xticks(fontsize=8,rotation=90)
 plt.ylim((0,8.2))
 plt.title("%s:GxG"%model,fontsize=20)
+#plt.arrow(6, 6, 0, -1, width = 0.2,color = 'red')
 plt.arrow(14, 6, 0, -1, width = 0.2,color = 'red')
 plt.savefig('Desktop/cont_figs/%s_GG_2lp_boxplt_s4.eps'%model, format='eps',bbox_inches='tight')
 # show plot
@@ -373,7 +384,7 @@ plt.show()
 
 
 ##################################################################################################
-##################################################################################################   PCP G 152-3-4-5  ( Altta all combination var colours icin)
+##################################################################################################   PCP G 137-152-3-4-5  ( Altta all combination var colours icin)
 ##################################################################################################   
 
 modelcma = "CMAES"
@@ -408,7 +419,7 @@ for i in range(len(globals()[f'f_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)])):
     if globals()[f'f_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)][i]==f[f.index(globals()[f'f_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)][i])]:
         c2.append(colours[f.index(globals()[f'f_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)][i])])   
 
-#%%  asagiis tamamen farkli renkler de olsun diye, diger skip edebilirsin
+#%%  asagisi tamamen farkli renkler de olsun diye, diger skip edebilirsin
 ######################################################################## Tum gateler icin all colour- istersen skip et 
 ###############################################################################   152-3-4-5 den sonra geleni de ekleyebilirsin
 modelcma = "CMAES"
@@ -420,8 +431,10 @@ gatesm = list(map(list, itertools.product([0, 1], repeat=n)))
 
 ### First gate 152
 GATES = []
+GATES.append(gatesm[137])
 for i in range(152,156):
     GATES.append(gatesm[i])
+
 
 
 # savename = f"{gate}"
@@ -449,10 +462,10 @@ colours = cm.RdBu(norm(f))  # div
 rgb = {} 
 opti = [modelcma,modelnmm]
 count = 0
-for i in range(9):
+for i in range(11):
         rgb[i] =[]
 
-for k in GATES:    
+for k in GATES:
     gate = k
     r = gatesm.index(k)   
     for m in opti:  
@@ -460,152 +473,9 @@ for k in GATES:
         for i in range(len(globals()[f'f_%s_%s_%s' % (m,f"arabid2lp",gate)])):           
             if globals()[f'f_%s_%s_%s' % (m,f"arabid2lp",gate)][i]==f[f.index(globals()[f'f_%s_%s_%s' % (m,f"arabid2lp",gate)][i])]:
                 rgb[count].append(colours[f.index(globals()[f'f_%s_%s_%s' % (m,f"arabid2lp",gate)][i])])
+ 
         
-
-#%%
-
-gate = gatesm[155]
-
-###  plot  CMAES
-ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 24, '$τ_4$':24, '$τ_5$':24,'$τ_6$':24,'$τ_7$':12,'$τ_8$':12,'$τ_9$':12,
-      '$T_1$' :1,'$T_2$' : 1,'$T_3$' :1,'$T_4$' :1,'$l_1$':4,'$l_2$':4}
-lb = {'$τ_1$':0,'$τ_2$' : 0,'$τ_3$' : 0, '$τ_4$':0, '$τ_5$':0,'$τ_6$':0, '$τ_7$':0, '$τ_8$':0,'$τ_9$':0,
-      '$T_1$' :0,'$T_2$' : 0, '$T_3$' :0,'$T_4$' :0,'$l_1$':0,'$l_2$':0}
-
-
-t = 'T_1'
-e = 'T_2'
-u = 'T_3'
-z = 'T_4'
-p = '\u03C4_1'
-c = '\u03C4_2'
-s = '\u03C4_3'
-k = '\u03C4_4'
-l = '\u03C4_5'
-m = '\u03C4_6'
-n = '\u03C4_7'
-o = '\u03C4_8'
-r = '\u03C4_9'
-a = 'l_1'
-b = 'l_2'
-T1 =[]
-T2 =[]
-T3 =[]
-T4 =[]
-t1 =[]
-t2 =[]
-t3 =[]
-t4 =[]
-t5 =[]
-t6 =[]
-t7 =[]
-t8 =[]
-t9 =[]
-l1 =[]
-l2 = []
-for i in globals()['x_%s_%s_%s' % (modelcma,"arabid2lp",gate)]:
-    t1.append(i[0])
-    t2.append(i[1])
-    t3.append(i[2])
-    t4.append(i[3])
-    t5.append(i[4])
-    t6.append(i[5])
-    t7.append(i[6])
-    t8.append(i[7])
-    t9.append(i[8])
-    T1.append(i[9])
-    T2.append(i[10])
-    T3.append(i[11])
-    T4.append(i[12])
-    l1.append(i[13])
-    l2.append(i[14])
-
-    
-data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
-        r'${}$'.format(m): t6, r'${}$'.format(n): t7, r'${}$'.format(o): t8, r'${}$'.format(r): t9,
-        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,r'${}$'.format(z): T4,
-        r'${}$'.format(a):l1,r'${}$'.format(b):l2,'Fitness': globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)]} 
-
-df = pd.DataFrame(data)
-
-ub_y = [24.0,24.0,24.0,24.0,24.0,24.0,12.0,12.0,12.0,1.0,1.0,1.0,1.0,4.0,4.0]
-lb_y = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-
-
-cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
-x = [i for i, _ in enumerate(cols)]
-norm = colors.Normalize(0,8) #(min(f), max(f))  !! color...
-colours = cm.RdBu(norm(f))  # divides the bins by the size of the list normalised data
-fig, axes = plt.subplots(1, len(x)-1, sharey=False, figsize=(12,8)) # Create (X-1) sublots along x axis
-fig.text(0.03, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
-min_max_range = {} # Get min, max and range for each column
-for col in cols: # Normalize the data for each column
-    #min_max_range[col] = [df[col].min(), df[col].max(), np.ptp(df[col])]
-    min_max_range[col] = [lb[col], ub[col], np.ptp([ub[col],lb[col]])]
-    df[col] = np.true_divide(df[col] - lb[col], np.ptp([ub[col],lb[col]])) 
-    #df[col] = np.true_divide(df[col] - df[col].min(), np.ptp(df[col]))
-for i, ax in enumerate(axes): # Plot each row
-    for idx in df.index:
-        im = ax.plot(df.loc[idx, cols], color= rgb[1][idx])
-    ax.set_xlim([x[i], x[i+1]])
-    plt.yticks(lb_y,ub_y)
-    #ax.set_ylim([lb[i],ub[i]])
-def set_ticks_for_axis(dim, ax, ticks): # Set the tick positions and labels on y axis for each plot
-    min_val, max_val, val_range = min_max_range[cols[dim]] # Tick positions based on normalised data
-    step = val_range / float(ticks-1) # Tick labels are based on original data
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    norm_min = lb[col]#df[cols[dim]].min()
-    norm_range = np.ptp([ub[col],lb[col]])#np.ptp(df[cols[dim]])
-    norm_step = norm_range / float(ticks-1)
-    ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
-    ax.yaxis.set_ticks(ticks)
-    ax.set_yticklabels(tick_labels,fontsize =20)
-for dim, ax in enumerate(axes):
-    ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
-    set_ticks_for_axis(dim, ax, ticks=7) # here ticks 6 has 6 labels on y axis
-    ax.set_xticklabels([cols[dim]],fontsize =20)
-ax = plt.twinx(axes[-1]) # Move the final axis' ticks to the right-hand side
-ax.set_ylim([0,4])
-dim = len(axes)
-ax.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
-#set_ticks_for_axis(dim, ax, ticks=7)
-ax.set_xticklabels([cols[-2], cols[-1]])
-ax.xaxis.set_tick_params(labelsize=50) ##  ax.tick_params(axis = 'both', which = 'major', labelsize = 24) sagdaki y labellarini degistiriyor
-plt.subplots_adjust(wspace=0) # Remove space between subplots
-sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=6))#(vmin=min(f), vmax=max(f)))   !!color...
-position=fig.add_axes([0.97,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
-cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
-tick_locator = ticker.MaxNLocator(nbins=5)
-cb.locator = tick_locator
-
-cb.update_ticks()
-cb.ax.tick_params(labelsize=17)
-#plt.title("g = 01")  
-matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
-#plt.savefig('Desktop/cont_figs/CMAES_GG_%s_pcp_naxes.eps'%gate, format='eps',bbox_inches='tight')
-plt.show()    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#################################################################################################################
-
+################################################################################################  PCP CMAES
 gate = gatesm[155]
 
 ###  plot  CMAES
@@ -614,9 +484,7 @@ gate = gatesm[155]
 ub_y = [25,25,25,25,25,25,12,12,12,1.0,1.0,1.0,1.0,4.0,4.0]
 lb_y = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 
-
-
-
+cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
 
 
 ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 24, '$τ_4$':24, '$τ_5$':24,'$τ_6$':24,'$τ_7$':12,'$τ_8$':12,'$τ_9$':12,
@@ -662,15 +530,15 @@ for i in globals()['x_%s_%s_%s' % (modelcma,"arabid2lp",gate)]:
     t4.append(i[3])
     t5.append(i[4])
     t6.append(i[5])
-    t7.append(i[6])
-    t8.append(i[7])
-    t9.append(i[8])
-    T1.append(i[9])
-    T2.append(i[10])
-    T3.append(i[11])
-    T4.append(i[12])
-    l1.append(i[13])
-    l2.append(i[14])
+    t7.append(2*i[6])
+    t8.append(2*i[7])
+    t9.append(2*i[8])
+    T1.append(24*i[9])
+    T2.append(24*i[10])
+    T3.append(24*i[11])
+    T4.append(15*i[12])
+    l1.append(6*i[13])
+    l2.append(6*i[14])
 
     
 data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
@@ -693,18 +561,18 @@ for col in cols:
 
 y0min = ys[0].min()
 dy = ys[0].max() - y0min
-zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+#zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+for k in ys:
+    print(k)
+#zs = 
 ynames = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
-
-
 
 axes = [host] + [host.twinx() for i in range(len(ys) - 1)]
 for i, (ax, y) in enumerate(zip(axes, ys)):  ### i = 15   y = 15 tane 30lu cozum
-    print(y)
     #ax.set_ylim(y.min(), y.max())
     ax.set_ylim(lb_y[i], ub_y[i])
     ax.spines['top'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
+    #ax.spines['bottom'].set_visible(False)
     if ax != host:
         ax.spines['left'].set_visible(False)
         ax.yaxis.set_ticks_position('right')
@@ -718,8 +586,11 @@ host.spines['right'].set_visible(False)
 
 
 for j in range(len(ys[0])):
-    host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
-
+    #host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
+    host.plot(range(len(ys)), [z[j] for z in ys], c=rgb[9][j])
+    
+    
+    
 sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=8))#(vmin=min(f), vmax=max(f)))   !!color...
 position=fig.add_axes([0.94,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
 cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
@@ -730,50 +601,100 @@ cb.update_ticks()
 cb.ax.tick_params(labelsize=17)
 #plt.title("g = 01")  
 matplotlib.rc('xtick', labelsize=20) 
+plt.savefig('Desktop/cont_figs/CMAES_GG_%s_pcp_naxes.eps'%gate, format='eps',bbox_inches='tight')
 plt.show()
 
 
+#########################################################################################   PCP nmmso 137
+
+
+t = 'T_1'
+e = 'T_2'
+u = 'T_3'
+z = 'T_4'
+p = '\u03C4_1'
+c = '\u03C4_2'
+s = '\u03C4_3'
+k = '\u03C4_4'
+l = '\u03C4_5'
+m = '\u03C4_6'
+n = '\u03C4_7'
+o = '\u03C4_8'
+r = '\u03C4_9'
+a = 'l_1'
+b = 'l_2'
+T1 =[]
+T2 =[]
+T3 =[]
+T4 =[]
+t1 =[]
+t2 =[]
+t3 =[]
+t4 =[]
+t5 =[]
+t6 =[]
+t7 =[]
+t8 =[]
+t9 =[]
+l1 =[]
+l2 = []
+for i in globals()['x_%s_%s_%s' % (modelnmm,"arabid2lp",gate)]:
+    t1.append(i[0])
+    t2.append(i[1])
+    t3.append(i[2])
+    t4.append(i[3])
+    t5.append(i[4])
+    t6.append(i[5])
+    t7.append(2*i[6])
+    t8.append(2*i[7])
+    t9.append(2*i[8])
+    T1.append(24*i[9])
+    T2.append(24*i[10])
+    T3.append(24*i[11])
+    T4.append(20*i[12])
+    l1.append(6*i[13])
+    l2.append(6*i[14])
 
 
 
+data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
+        r'${}$'.format(m): t6, r'${}$'.format(n): t7, r'${}$'.format(o): t8, r'${}$'.format(r): t9,
+        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,r'${}$'.format(z): T4,
+        r'${}$'.format(a):l1,r'${}$'.format(b):l2,'Fitness': globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)]} 
+
+df = pd.DataFrame(data)
 
 
+fig, host = plt.subplots(1, sharey=False, figsize=(14,8))
+#fig, host = plt.subplots()
+fig.text(0.08, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
 
 
+ys = []
+for col in cols:
+    print(col)
+    ys.append(np.array(df[col]))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-y0min = 0
-dy = 24 - y0min
-zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+y0min = ys[0].min()
+dy = ys[0].max() - y0min
+#zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+for k in ys:
+    print(k)
+#zs = 
 ynames = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
 
 axes = [host] + [host.twinx() for i in range(len(ys) - 1)]
-for i, (ax, y) in enumerate(zip(axes, ys)):   ###   i =14 index, y 30 datas for each 14
+for i, (ax, y) in enumerate(zip(axes, ys)):  ### i = 15   y = 15 tane 30lu cozum
     #ax.set_ylim(y.min(), y.max())
-    #ax.set_ylim(lb_y[i], ub_y[i])
-    #ax.yaxis.set_ticks(np.round(np.arange(lb_y[i], ub_y[i], np.round(ub_y[i]/6)), 1))
-    ax.set_ylim(y.min(), y.max())
-    
+    ax.set_ylim(lb_y[i], ub_y[i])
+    ax.spines['top'].set_visible(False)
+    #ax.spines['bottom'].set_visible(False)
     if ax != host:
-        #ax.spines['left'].set_visible(False)
+        ax.spines['left'].set_visible(False)
         ax.yaxis.set_ticks_position('right')
         ax.spines["right"].set_position(("axes", i / (len(ys) - 1)))
 
 host.set_xlim(0, len(ys) - 1)
-#host.set_ylim([0, 24])
 host.set_xticks(range(len(ys)))
 host.set_xticklabels(ynames)
 host.tick_params(axis='x', which='major', pad=7)
@@ -781,7 +702,11 @@ host.spines['right'].set_visible(False)
 
 
 for j in range(len(ys[0])):
-    host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
+    #host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
+    host.plot(range(len(ys)), [z[j] for z in ys], c=rgb[10][j])
+    
+    
+    
 sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=8))#(vmin=min(f), vmax=max(f)))   !!color...
 position=fig.add_axes([0.94,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
 cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
@@ -792,68 +717,75 @@ cb.update_ticks()
 cb.ax.tick_params(labelsize=17)
 #plt.title("g = 01")  
 matplotlib.rc('xtick', labelsize=20) 
-
-#fig.tight_layout()
-plt.show()
-
-#################################################################################################
-
-
-
-
-
-fig, host = plt.subplots()
-
-N = 20
-y1 = np.random.uniform(10, 50, N)
-y2 = np.sin(np.random.uniform(0, np.pi, N))
-y3 = np.random.binomial(300, 0.9, N)
-y4 = np.random.pareto(10, N)
-y5 = np.random.uniform(0, 800, N)
-ys = [y1, y2, y3, y4, y5]
-y0min = ys[0].min()
-dy = ys[0].max() - y0min
-zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
-ynames = ['P1', 'P2', 'P3', 'P4', 'P5']
-
-axes = [host] + [host.twinx() for i in range(len(ys) - 1)]
-for i, (ax, y) in enumerate(zip(axes, ys)):
-    ax.set_ylim(y.min(), y.max())
-    ax.spines['top'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-    if ax != host:
-        #ax.spines['left'].set_visible(False)
-        ax.yaxis.set_ticks_position('right')
-        ax.spines["right"].set_position(("axes", i / (len(ys) - 1)))
-
-host.set_xlim(0, len(ys) - 1)
-host.set_xticks(range(len(ys)))
-host.set_xticklabels(ynames)
-host.tick_params(axis='x', which='major', pad=7)
-host.spines['right'].set_visible(False)
-
-colors = plt.cm.tab20.colors
-for j in range(len(ys[0])):
-    host.plot(range(len(ys)), [z[j] for z in zs], c=colors[j % len(colors)])
-
+#plt.savefig('Desktop/cont_figs/NMMSO_GG_%s_pcp_naxes.eps'%gate, format='eps',bbox_inches='tight')
 plt.show()
 
 
 
 
+##################################################################################### 
+##################################################################################### 
+#####################################################################################  COMPARABLE SOLS
+##################################################################################### 
+##################################################################################### 
+
+####################################################################################   PCP for gate 137 -   both CMAES and NMMSO [0,0,1,1,1] 
+###   5-7, for gate 137 cma....
+##  9-10 for gate 152 CMA
+### 11-15 for gate 154 CMA
+####  5-9 for MCA gate 155
+
+c1=[]
+#c2=[]
+f_idx = 25
+s_idx = 26
+n = 8
+gatesm = list(map(list, itertools.product([0, 1], repeat=n)))  
+gate = gatesm[152]
+savename = f"{gate}"
+
+gate_1g = globals()['x_%s_%s_%s' %(modelcma,"arabid2lp",gate)]
+gate_1 =[] 
+gate_1.append(gate_1g[f_idx]) 
+gate_1.append(gate_1g[s_idx])
+gate_1g = gate_1
+f = globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)]
+
+fn = []
+fn.append(f[f_idx])
+fn.append(f[s_idx])
+#f = fn
+
+
+f = sorted(f)
+norm = colors.Normalize(0, 8) #(min(f), max(f))    #### colorbari degistirince burayi da degistir !!
+colours = cm.RdBu(norm(f))  # div
 
 
 
 
+    
+for i in range(len(globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)])):     
+    if globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)][i] in fn:
+        c1.append(colours[f.index(globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)][i])])   
+# for i in range(len(globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)])):        
+#     if globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)][i] in fn:
+#         c2.append(colours[f.index(globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)][i])])   
 
 
 
+ub_y = [25,25,25,25,25,25,12,12,12,1.0,1.0,1.0,1.0,4.0,4.0]
+lb_y = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 
 
 
+###  plot  CMAES
+ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 24, '$τ_4$':24, '$τ_5$':24,'$τ_6$':24,'$τ_7$':12,'$τ_8$':12,'$τ_9$':12,
+      '$T_1$' :1,'$T_2$' : 1,'$T_3$' :1,'$T_4$' :1,'$l_1$':4,'$l_2$':4}
+lb = {'$τ_1$':0,'$τ_2$' : 0,'$τ_3$' : 0, '$τ_4$':0, '$τ_5$':0,'$τ_6$':0, '$τ_7$':0, '$τ_8$':0,'$τ_9$':0,
+      '$T_1$' :0,'$T_2$' : 0, '$T_3$' :0,'$T_4$' :0,'$l_1$':0,'$l_2$':0}
 
-
-###       plot   NMMSO
+cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
 
 
 
@@ -887,302 +819,712 @@ t8 =[]
 t9 =[]
 l1 =[]
 l2 = []
-for i in globals()[f'x_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)]:
+for i in gate_1g :
     t1.append(i[0])
     t2.append(i[1])
     t3.append(i[2])
     t4.append(i[3])
     t5.append(i[4])
     t6.append(i[5])
-    t7.append(i[6])
-    t8.append(i[7])
-    t9.append(i[8])
-    T1.append(i[9])
-    T2.append(i[10])
-    T3.append(i[11])
-    T4.append(i[12])
-    l1.append(i[13])
-    l2.append(i[14])
-    
+    t7.append(2*i[6])
+    t8.append(2*i[7])
+    t9.append(2*i[8])
+    T1.append(24*i[9])
+    T2.append(24*i[10])
+    T3.append(24*i[11])
+    T4.append(20*i[12])
+    l1.append(6*i[13])
+    l2.append(6*i[14])
     
 data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
         r'${}$'.format(m): t6, r'${}$'.format(n): t7, r'${}$'.format(o): t8, r'${}$'.format(r): t9,
         r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,r'${}$'.format(z): T4,
-        r'${}$'.format(a):l1,r'${}$'.format(b):l2,'Fitness': globals()[f'x_%s_%s_%s' % (modelnmm,f"arabid2lp",gate)]} 
+        r'${}$'.format(a):l1,r'${}$'.format(b):l2,'Fitness': fn} 
+
 df = pd.DataFrame(data)
-cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
-x = [i for i, _ in enumerate(cols)]
-norm = colors.Normalize(0,8)#(min(f), max(f))
-colours = cm.RdBu(norm(f))  # divides the bins by the size of the list normalised data
-fig, axes = plt.subplots(1, len(x)-1, sharey=False, figsize=(12,8)) # Create (X-1) sublots along x axis
-fig.text(0.03, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
-min_max_range = {} # Get min, max and range for each column
-for col in cols: # Normalize the data for each column
-    #min_max_range[col] = [df[col].min(), df[col].max(), np.ptp(df[col])]
-    min_max_range[col] = [lb[col], ub[col], np.ptp([ub[col],lb[col]])]
-    df[col] = (df[col] - lb[col])/ np.ptp([ub[col],lb[col]])
-for i, ax in enumerate(axes): # Plot each row
-    for idx in df.index:
-        im = ax.plot(df.loc[idx, cols], color= rgb[8][idx])   ###  c2[idx]
-    ax.set_xlim([x[i], x[i+1]])
-    ax.set_ylim([lb[col],ub[col]])
-def set_ticks_for_axis(dim, ax, ticks): # Set the tick positions and labels on y axis for each plot
-    min_val, max_val, val_range = min_max_range[cols[dim]] # Tick positions based on normalised data
-    step = val_range / float(ticks-1) # Tick labels are based on original data
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    norm_min = lb[col]#df[cols[dim]].min()
-    norm_range = np.ptp([ub[col],lb[col]])#np.ptp(df[cols[dim]])
-    norm_step = norm_range / float(ticks-1)
-    ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
-    ax.yaxis.set_ticks(ticks)
-    ax.set_yticklabels(tick_labels,fontsize =20)
-for dim, ax in enumerate(axes):
-    ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
-    set_ticks_for_axis(dim, ax, ticks=7) # here ticks 6 has 6 labels on y axis
-    ax.set_xticklabels([cols[dim]],fontsize =20)
-ax = plt.twinx(axes[-1]) # Move the final axis' ticks to the right-hand side
-dim = len(axes)
-ax.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
-set_ticks_for_axis(dim, ax, ticks=7)
-ax.set_xticklabels([cols[-2], cols[-1]])
-ax.xaxis.set_tick_params(labelsize=50) ##  ax.tick_params(axis = 'both', which = 'major', labelsize = 24) sagdaki y labellarini degistiriyor
-plt.subplots_adjust(wspace=0) # Remove space between subplots
-sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=8))#(vmin=min(f), vmax=max(f)))
-position=fig.add_axes([0.97,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
+
+
+fig, host = plt.subplots(1, sharey=False, figsize=(14,8))
+#fig, host = plt.subplots()
+fig.text(0.08, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
+
+
+ys = []
+for col in cols:
+    print(col)
+    ys.append(np.array(df[col]))
+
+y0min = ys[0].min()
+dy = ys[0].max() - y0min
+#zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+for k in ys:
+    print(k)
+#zs = 
+ynames = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
+
+axes = [host] + [host.twinx() for i in range(len(ys) - 1)]
+for i, (ax, y) in enumerate(zip(axes, ys)):  ### i = 15   y = 15 tane 30lu cozum
+    #ax.set_ylim(y.min(), y.max())
+    ax.set_ylim(lb_y[i], ub_y[i])
+    ax.spines['top'].set_visible(False)
+    #ax.spines['bottom'].set_visible(False)
+    if ax != host:
+        ax.spines['left'].set_visible(False)
+        ax.yaxis.set_ticks_position('right')
+        ax.spines["right"].set_position(("axes", i / (len(ys) - 1)))
+
+host.set_xlim(0, len(ys) - 1)
+host.set_xticks(range(len(ys)))
+host.set_xticklabels(ynames)
+host.tick_params(axis='x', which='major', pad=7)
+host.spines['right'].set_visible(False)
+plt.rcParams['axes.grid'] = False
+
+for j in range(len(ys[0])):
+    #host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
+    host.plot(range(len(ys)), [z[j] for z in ys], c=c1[j])
+    
+    
+    
+sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=8))#(vmin=min(f), vmax=max(f)))   !!color...
+position=fig.add_axes([0.94,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
 cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
-tick_locator = ticker.MaxNLocator(nbins=5)
+tick_locator = ticker.MaxNLocator(nbins=8)
 cb.locator = tick_locator
 
 cb.update_ticks()
-cb.ax.tick_params(labelsize=17)
+cb.ax.tick_params(labelsize=20)
 #plt.title("g = 01")  
-matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
-#matplotlib.rc('ytick', labelsize=30)
-#plt.savefig('Desktop/cont_figs/NMMSO_GG_%s_pcp_naxes.eps'%gate, format='eps',bbox_inches='tight')
-plt.show()    
+matplotlib.rc('xtick', labelsize=20) 
+plt.savefig('Desktop/cont_figs/CMAES_ext_%s_%s_%s_pcp_naxes.eps'%(gate,f_idx,s_idx), format='eps',bbox_inches='tight')
+plt.show()
 
+########################################################################################   NMMSO extracted 2 sols
+#############    nmmso 1-2 best for gate 137
 
+####  NMSO 6-13 for gate 152
+###  NMMSO for gate 154 -- 11-23
+####  NMMSO 4- 26 cok iyi for gate 155
 
-
-
-
-
-
-
-
-
-
-
-
-
-##################################################################################### 
-##################################################################################### 
-#####################################################################################  COMPARABLE SOLS
-##################################################################################### 
-##################################################################################### 
-
-####################################################################################   PCP for gate 152 -   both CMAES and NMMSO [0,0,1,1,1] 
-
-c1=[]
 c2=[]
 
 n = 8
 gatesm = list(map(list, itertools.product([0, 1], repeat=n)))  
-gate = gatesm[152]
+gate = gatesm[155]
 savename = f"{gate}"
 
-gate_1g = globals()['x_CMAES_%s' % savename]
+gate_1g = globals()['x_%s_%s_%s' %(modelnmm,"arabid2lp",gate)]
 gate_1 =[] 
-gate_1.append(gate_1g[6]) 
-gate_1.append(gate_1g[11])
+gate_1.append(gate_1g[29]) 
+gate_1.append(gate_1g[26])
 gate_1g = gate_1
-f = globals()['f_CMAES_%s' % savename]
+f = globals()['f_%s_%s_%s' %(modelcma,"arabid2lp",gate)]
 
 fn = []
-fn.append(f[6])
-fn.append(f[11])
-f = fn
+fn.append(f[4])
+fn.append(f[26])
+
 
 
 f = sorted(f)
-norm = colors.Normalize(0, 6) #(min(f), max(f))    #### colorbari degistirince burayi da degistir !!
+norm = colors.Normalize(0, 8) #(min(f), max(f))    #### colorbari degistirince burayi da degistir !!
 colours = cm.RdBu(norm(f))  # div
-    
-for i in range(len(globals()['f_CMAES_%s' % savename])):        
-    if globals()['f_CMAES_%s' % savename][i]==f[f.index(globals()['f_CMAES_%s' % savename][i])]:
-        c1.append(colours[f.index(globals()['f_CMAES_%s' % savename][i])])   
-for i in range(len(globals()['f_NMMSO_%s' % savename])):        
-    if globals()['f_NMMSO_%s' % savename][i]==f[f.index(globals()['f_NMMSO_%s' % savename][i])]:
-        c2.append(colours[f.index(globals()['f_NMMSO_%s' % savename][i])])   
+
+
+for i in range(len(globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)])):        
+    if globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)][i] in fn:
+        c2.append(colours[f.index(globals()['f_%s_%s_%s' %(modelnmm,"arabid2lp",gate)][i])])   
 
 
 
-###  plot  CMAES
-ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 12, '$τ_4$':24, '$τ_5$':12,'$T_1$' :1,'$T_2$' : 1,'$T_3$' :1}
-lb = {'$τ_1$':0,'$τ_2$' : 0,'$τ_3$' : 0, '$τ_4$':0, '$τ_5$':0,'$T_1$' :0,'$T_2$' : 0, '$T_3$' :0}
+
+ub_y = [25,25,25,25,25,25,12,12,12,1.0,1.0,1.0,1.0,4.0,4.0]
+lb_y = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+
+
+ub = {'$τ_1$':24,'$τ_2$' : 24,'$τ_3$' : 24, '$τ_4$':24, '$τ_5$':24,'$τ_6$':24,'$τ_7$':12,'$τ_8$':12,'$τ_9$':12,
+      '$T_1$' :1,'$T_2$' : 1,'$T_3$' :1,'$T_4$' :1,'$l_1$':4,'$l_2$':4}
+lb = {'$τ_1$':0,'$τ_2$' : 0,'$τ_3$' : 0, '$τ_4$':0, '$τ_5$':0,'$τ_6$':0, '$τ_7$':0, '$τ_8$':0,'$τ_9$':0,
+      '$T_1$' :0,'$T_2$' : 0, '$T_3$' :0,'$T_4$' :0,'$l_1$':0,'$l_2$':0}
+
+cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
+
 
 
 t = 'T_1'
 e = 'T_2'
 u = 'T_3'
+z = 'T_4'
 p = '\u03C4_1'
 c = '\u03C4_2'
 s = '\u03C4_3'
 k = '\u03C4_4'
 l = '\u03C4_5'
+m = '\u03C4_6'
+n = '\u03C4_7'
+o = '\u03C4_8'
+r = '\u03C4_9'
+a = 'l_1'
+b = 'l_2'
 T1 =[]
 T2 =[]
 T3 =[]
+T4 =[]
 t1 =[]
 t2 =[]
 t3 =[]
 t4 =[]
 t5 =[]
-for i in globals()['x_CMAES_%s' % savename]:
+t6 =[]
+t7 =[]
+t8 =[]
+t9 =[]
+l1 =[]
+l2 = []
+for i in gate_1g :
     t1.append(i[0])
     t2.append(i[1])
     t3.append(i[2])
     t4.append(i[3])
     t5.append(i[4])
-    T1.append(i[5])
-    T2.append(i[6])
-    T3.append(i[7])
+    t6.append(i[5])
+    t7.append(2*i[6])
+    t8.append(2*i[7])
+    t9.append(2*i[8])
+    T1.append(24*i[9])
+    T2.append(24*i[10])
+    T3.append(24*i[11])
+    T4.append(20*i[12])
+    l1.append(6*i[13])
+    l2.append(6*i[14])
     
 data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
-        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,'Fitness': globals()['f_CMAES_%s' % savename]} 
+        r'${}$'.format(m): t6, r'${}$'.format(n): t7, r'${}$'.format(o): t8, r'${}$'.format(r): t9,
+        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,r'${}$'.format(z): T4,
+        r'${}$'.format(a):l1,r'${}$'.format(b):l2,'Fitness': fn} 
+
 df = pd.DataFrame(data)
-cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$T_1$','$T_2$','$T_3$']
-x = [i for i, _ in enumerate(cols)]
-norm = colors.Normalize(0,6)#(min(f), max(f))
-colours = cm.RdBu(norm(f))  # divides the bins by the size of the list normalised data
-fig, axes = plt.subplots(1, len(x)-1, sharey=False, figsize=(12,8)) # Create (X-1) sublots along x axis
-fig.text(0.03, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
-min_max_range = {} # Get min, max and range for each column
-for col in cols: # Normalize the data for each column
-    #min_max_range[col] = [df[col].min(), df[col].max(), np.ptp(df[col])]
-    min_max_range[col] = [lb[col], ub[col], np.ptp([ub[col],lb[col]])]
-    df[col] = np.true_divide(df[col] - lb[col], np.ptp([ub[col],lb[col]]))
-    #df[col] = np.true_divide(df[col] - df[col].min(), np.ptp(df[col]))
-for i, ax in enumerate(axes): # Plot each row
-    for idx in df.index:
-        im = ax.plot(df.loc[idx, cols], color= c1[idx])
-    ax.set_xlim([x[i], x[i+1]])
-    #ax.set_ylim([lb[i],ub[i]])
-def set_ticks_for_axis(dim, ax, ticks): # Set the tick positions and labels on y axis for each plot
-    min_val, max_val, val_range = min_max_range[cols[dim]] # Tick positions based on normalised data
-    step = val_range / float(ticks-1) # Tick labels are based on original data
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    norm_min = lb[col]#df[cols[dim]].min()
-    norm_range = np.ptp([ub[col],lb[col]])#np.ptp(df[cols[dim]])
-    norm_step = norm_range / float(ticks-1)
-    ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
-    ax.yaxis.set_ticks(ticks)
-    ax.set_yticklabels(tick_labels,fontsize =20)
-for dim, ax in enumerate(axes):
-    ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
-    set_ticks_for_axis(dim, ax, ticks=7) # here ticks 6 has 6 labels on y axis
-    ax.set_xticklabels([cols[dim]],fontsize =20)
-ax = plt.twinx(axes[-1]) # Move the final axis' ticks to the right-hand side
-dim = len(axes)
-ax.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
-set_ticks_for_axis(dim, ax, ticks=7)
-ax.set_xticklabels([cols[-2], cols[-1]])
-ax.xaxis.set_tick_params(labelsize=50) ##  ax.tick_params(axis = 'both', which = 'major', labelsize = 24) sagdaki y labellarini degistiriyor
-plt.subplots_adjust(wspace=0) # Remove space between subplots
-sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=6))#(vmin=min(f), vmax=max(f)))
-position=fig.add_axes([0.97,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
+
+
+fig, host = plt.subplots(1, sharey=False, figsize=(14,8))
+#fig, host = plt.subplots()
+fig.text(0.08, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
+
+
+ys = []
+for col in cols:
+    print(col)
+    ys.append(np.array(df[col]))
+
+y0min = ys[0].min()
+dy = ys[0].max() - y0min
+#zs = [ys[0]] + [(y - y.min()) / (y.max() - y.min()) * dy + y0min for y in ys[1:]]
+for k in ys:
+    print(k)
+#zs = 
+ynames = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$τ_6$','$τ_7$','$τ_8$','$τ_9$','$T_1$','$T_2$','$T_3$','$T_4$','$l_1$','$l_2$']
+
+axes = [host] + [host.twinx() for i in range(len(ys) - 1)]
+for i, (ax, y) in enumerate(zip(axes, ys)):  ### i = 15   y = 15 tane 30lu cozum
+    #ax.set_ylim(y.min(), y.max())
+    ax.set_ylim(lb_y[i], ub_y[i])
+    ax.spines['top'].set_visible(False)
+    #ax.spines['bottom'].set_visible(False)
+    if ax != host:
+        ax.spines['left'].set_visible(False)
+        ax.yaxis.set_ticks_position('right')
+        ax.spines["right"].set_position(("axes", i / (len(ys) - 1)))
+
+host.set_xlim(0, len(ys) - 1)
+host.set_xticks(range(len(ys)))
+host.set_xticklabels(ynames)
+host.tick_params(axis='x', which='major', pad=7)
+host.spines['right'].set_visible(False)
+
+
+for j in range(len(ys[0])):
+    #host.plot(range(len(ys)), [z[j] for z in zs], c=rgb[1][j])
+    host.plot(range(len(ys)), [z[j] for z in ys], c=c2[j])
+    
+    
+    
+sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=8))#(vmin=min(f), vmax=max(f)))   !!color...
+position=fig.add_axes([0.94,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
 cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
-tick_locator = ticker.MaxNLocator(nbins=5)
+tick_locator = ticker.MaxNLocator(nbins=8)
 cb.locator = tick_locator
 
 cb.update_ticks()
-cb.ax.tick_params(labelsize=17)
+cb.ax.tick_params(labelsize=20)
 #plt.title("g = 01")  
-matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
-#matplotlib.rc('ytick', labelsize=30)
-plt.savefig('Desktop/Figs_neuro2lp/CMAES_GG_7_pcp_naxes.eps', format='eps',bbox_inches='tight')
-plt.show()    
+matplotlib.rc('xtick', labelsize=20) 
+plt.savefig('Desktop/cont_figs/NMMSO_ext_%s_pcp_naxes.eps'%gate, format='eps',bbox_inches='tight')
+plt.show()
+
+############################################################################################# 
+#############################################################################################  HEATMAP -- Corresponding to extracted sols
 
 
+model = modelcma
+model = modelnmm
 
-###       plot   NMMSO
+f_idx = 1
+s_idx = 2
+
+n = 8
+gatesm = list(map(list, itertools.product([0, 1], repeat=n)))  
+gate = gatesm[137]
+savename = f"{gate}"
+
+gate_1g = globals()['x_%s_%s_%s' %(model,"arabid2lp",gate)]
+gate_1 =[] 
+gate_1.append(gate_1g[f_idx]) 
+gate_1.append(gate_1g[s_idx])
+
+f = globals()['f_%s_%s_%s' %(model,"arabid2lp",gate)]
 
 
-
-T1 =[]
-T2 =[]
-T3 =[]
-t1 =[]
-t2 =[]
-t3 =[]
-t4 =[]
-t5 =[]
-for i in globals()['x_NMMSO_%s' % savename]:
-    t1.append(i[0])
-    t2.append(i[1])
-    t3.append(i[2])
-    t4.append(i[3])
-    t5.append(i[4])
-    T1.append(i[5])
-    T2.append(i[6])
-    T3.append(i[7])
+class Mat_Py:
+    def __init__(self):
+        self.cost, self.sol_ld, self.sol_dd, self.dat_ld, self.dat_dd = ([] for _ in range(5))
+        
+    def update(self, cost, sol_ld, sol_dd, dat_ld, dat_dd):
+        self.cost.append(cost)
+        self.sol_ld.append({'x':list(sol_ld['x']._data), 'y':np.asarray(sol_ld['y'], dtype=np.longdouble).tolist()})
+        self.sol_dd.append({'x':list(sol_dd['x']._data), 'y':np.asarray(sol_dd['y'], dtype=np.longdouble).tolist()})
+        self.dat_ld.append({'x':list(dat_ld['x']._data), 'y':np.asarray(dat_ld['y'], dtype=np.longdouble).tolist()})
+        self.dat_dd.append({'x':list(sol_dd['x']._data), 'y':np.asarray(dat_dd['y'], dtype=np.longdouble).tolist()})
     
-data = { r'${}$'.format(p): t1, r'${}$'.format(c):t2, r'${}$'.format(s): t3, r'${}$'.format(k): t4, r'${}$'.format(l): t5, 
-        r'${}$'.format(t): T1 ,r'${}$'.format(e): T2, r'${}$'.format(u): T3,'Fitness': globals()['f_NMMSO_%s' % savename]} 
-df = pd.DataFrame(data)
-cols = ['$τ_1$','$τ_2$','$τ_3$','$τ_4$', '$τ_5$','$T_1$','$T_2$','$T_3$']
-x = [i for i, _ in enumerate(cols)]
-norm = colors.Normalize(0, 6)#(min(f), max(f))
-colours = cm.RdBu(norm(f))  # divides the bins by the size of the list normalised data
-fig, axes = plt.subplots(1, len(x)-1, sharey=False, figsize=(12,8)) # Create (X-1) sublots along x axis
-fig.text(0.03, 0.5, 'Parameter values', va='center', rotation='vertical', fontsize = 30)
-min_max_range = {} # Get min, max and range for each column
-for col in cols: # Normalize the data for each column
-    #min_max_range[col] = [df[col].min(), df[col].max(), np.ptp(df[col])]
-    min_max_range[col] = [lb[col], ub[col], np.ptp([ub[col],lb[col]])]
-    df[col] = np.true_divide(df[col] - lb[col], np.ptp([ub[col],lb[col]]))
-    #df[col] = np.true_divide(df[col] - df[col].min(), np.ptp(df[col]))
-for i, ax in enumerate(axes): # Plot each row
-    for idx in df.index:
-        im = ax.plot(df.loc[idx, cols], color= c2[idx])
-    ax.set_xlim([x[i], x[i+1]])
-    #ax.set_ylim([lb[i],ub[i]])
-def set_ticks_for_axis(dim, ax, ticks): # Set the tick positions and labels on y axis for each plot
-    min_val, max_val, val_range = min_max_range[cols[dim]] # Tick positions based on normalised data
-    step = val_range / float(ticks-1) # Tick labels are based on original data
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    tick_labels = [round(min_val + step * i, 1) for i in range(ticks)]
-    norm_min = lb[col]#df[cols[dim]].min()
-    norm_range = np.ptp([ub[col],lb[col]])#np.ptp(df[cols[dim]])
-    norm_step = norm_range / float(ticks-1)
-    ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
-    ax.yaxis.set_ticks(ticks)
-    ax.set_yticklabels(tick_labels,fontsize =20)
-for dim, ax in enumerate(axes):
-    ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
-    set_ticks_for_axis(dim, ax, ticks=7) # here ticks 6 has 6 labels on y axis
-    ax.set_xticklabels([cols[dim]],fontsize =20)
-ax = plt.twinx(axes[-1]) # Move the final axis' ticks to the right-hand side
-dim = len(axes)
-ax.xaxis.set_major_locator(ticker.FixedLocator([x[-2], x[-1]]))
-set_ticks_for_axis(dim, ax, ticks=7)
-ax.set_xticklabels([cols[-2], cols[-1]])
-ax.xaxis.set_tick_params(labelsize=50) ##  ax.tick_params(axis = 'both', which = 'major', labelsize = 24) sagdaki y labellarini degistiriyor
-plt.subplots_adjust(wspace=0) # Remove space between subplots
-sm = plt.cm.ScalarMappable(cmap='RdBu', norm=colors.Normalize(vmin=0, vmax=6))#(vmin=min(f), vmax=max(f)))
-position=fig.add_axes([0.97,0.125,0.03,0.75]) # first num= distance to axis,2nd = top-botom, 3rd = width , 4th length
-cb = plt.colorbar(sm,cax=position,pad = 0.9)# pad = 0.15 shrink=0.9 colorbar length
-tick_locator = ticker.MaxNLocator(nbins=5)
-cb.locator = tick_locator
+    def get_all(self):
+        return [self.cost, self.sol_ld, self.sol_dd, self.dat_ld, self.dat_dd]
+         
+         
 
-cb.update_ticks()
-cb.ax.tick_params(labelsize=17)
-#plt.title("g = 01")  
-matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
-#matplotlib.rc('ytick', labelsize=30)
-plt.savefig('Desktop/Figs_neuro2lp/NMMSO_GG_7_pcp_naxes.eps', format='eps',bbox_inches='tight')
-plt.show()  
+
+
+func_output_t = Mat_Py()
+
+t = [[]]
+t[0] = gate_1g[f_idx]
+t.append(gate_1g[s_idx])
+
+
+for i in t: 
+    print(i)
+    gates = list(gate)
+    gates = matlab.double(gates)
+    inputparams = i
+    inputparams = list(inputparams)
+    inputparams = matlab.double(inputparams)
+    print(inputparams)
+    func_output_t.update(*eng.getBoolCost_cts_arabid2lp(inputparams, gates, dataLD, dataDD, lightForcingLD, lightForcingDD,nargout=5))
+
+[cost_t, sol_LD_t, sol_DD_t, datLD_t, datDD_t] = func_output_t.get_all()
+    
+
+    
+
+############   24den sonraki hal--- 24 yoksa bir oncekini alsin ama 24 varsa oradan itibaren alsin, cunku data 24den baslayacak
+
+datLD_t[0]['x'] = datLD_t[0]['x'][10:52]
+datLD_t[0]['y'][0] = datLD_t[0]['y'][0][10:52]
+datLD_t[0]['y'][1] = datLD_t[0]['y'][1][10:52]
+datLD_t[0]['y'][2] = datLD_t[0]['y'][2][10:52]
+datLD_t[0]['y'][3] = datLD_t[0]['y'][3][10:52]
+
+datLD_t[1]['x'] = datLD_t[1]['x'][10:52]#[8:42]
+datLD_t[1]['y'][0] = datLD_t[1]['y'][0][10:52]#[8:42]
+datLD_t[1]['y'][1] = datLD_t[1]['y'][1][10:52]#[8:42]
+datLD_t[1]['y'][2] = datLD_t[1]['y'][2][10:52]#[8:42]
+datLD_t[1]['y'][3] = datLD_t[1]['y'][3][10:52]#[8:42]
+
+###################################################  altta fnc yazilmisi var
+
+### alttakini fonk olarak yaz    ------ data 1-data 2 birlestirici fonk yaz !  hem LD icin hem DD icin !
+solution = sol_LD_t
+data_threshold = datLD_t
+data1={}
+#data1['x'] = data1['x'] + 3
+time, y0, y1,y2,y3 = [[] for i in range(5)]
+for i,val in enumerate(solution[0]['x']):
+    time.append(val)
+    for j,value in enumerate(data_threshold[0]['x']):         
+        if val<=value:
+            #print(val,value)
+            y0.append(data_threshold[0]['y'][0][j-1])
+            #print(y0)
+            y1.append(data_threshold[0]['y'][1][j-1])
+            y2.append(data_threshold[0]['y'][2][j-1])
+            y3.append(data_threshold[0]['y'][3][j-1])
+            y = [y0,y1,y2,y3]               
+            break
+data1['x'] = time
+data1['y']= y
+
+### alttakini fonk olarak yaz
+data2={}
+time, y0, y1,y2,y3 = [[] for i in range(5)]
+for i,val in enumerate(solution[1]['x']):
+    time.append(val)
+    for j,value in enumerate(data_threshold[1]['x']):         
+        if val<=value:
+            #print(val,value)
+            y0.append(data_threshold[1]['y'][0][j-1])
+            #print(y0)
+            y1.append(data_threshold[1]['y'][1][j-1])
+            y2.append(data_threshold[1]['y'][2][j-1])
+            y3.append(data_threshold[1]['y'][3][j-1])
+            y = [y0,y1,y2,y3]                           
+            break
+data2['x'] = time
+data2['y']= y
+
+light_cbar = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1]
+##############  this is for LD colormap
+time_list = np.linspace(24,120,193)    ##  bu tum 24den 120ye kadar olan 0.5 aralikli data
+# asagisi tekrar comt out
+
+
+###  bu tamamen tek satirli T iicn yazildi bunu keep
+def time_equalise(time_list,aggregated_data,m=0): # this means the first sol
+    y0 = []
+    for i,val in enumerate(time_list):
+        for j,value in enumerate(aggregated_data['x']):         
+            if val<=value:
+                y0.append(aggregated_data['y'][j-1])
+                y = y0             
+                break                 
+    while len(time_list)!= len(y0):
+        y.append(aggregated_data['y'][-1])
+    return y  
+
+
+light_switch= []
+for i in range(4,21) :
+    if i == 4:
+        light_switch.append(6*i)    
+    if i % 2 == 1:
+        light_switch.append(6*i)    
+light_cbar = {}
+light_cbar['x'] = light_switch
+light_cbar['y'] = [1,0,1,0,1,0,1,0,1]  
+T = time_equalise(time_list,light_cbar,m=0)
+
+#####  Simdi bu asagiis digerleri icin  yazildi
+
+def time_equalise(time_list,aggregated_data,m): # aggregated data time_liste gore ayarlanip degerleri 0-1 diye guncellenecek
+    y0,y1,y2,y3 = [[] for i in range(4)]
+    for i,val in enumerate(time_list):
+        for j,value in enumerate(aggregated_data[m]['x']):         
+            if val<=value:
+                y0.append(float(aggregated_data[m]['y'][0][j-1]))
+                y1.append(float(aggregated_data[m]['y'][1][j-1]))
+                y2.append(float(aggregated_data[m]['y'][2][j-1]))
+                y3.append(float(aggregated_data[m]['y'][3][j-1]))
+                y = [y0,y1,y2,y3]               
+                break                 
+    while len(time_list)!= len(y0):
+        y[0].append(float(aggregated_data[m]['y'][0][-1]))
+        y[1].append(float(aggregated_data[m]['y'][1][-1])  )
+        y[2].append(float(aggregated_data[m]['y'][2][-1]) ) 
+        y[3].append(float(aggregated_data[m]['y'][3][-1])  )
+    return y      
+
+
+
+##################
+
+
+
+cb = []
+for i in range(len(T)):
+    cb.append(np.float(T[i]))
+    
+# plt.plot(datLD_t[0]['x'],datLD_t[0]['y'][0])
+# plt.plot(time_list,first_data[0])
+
+
+aggregated_data = datLD_t   ##  aydinlik 2 datali x-y dictionarysi
+first_data = time_equalise(time_list,aggregated_data,0)   ##   time_equalise function ile bu light data cogaltiliyor sonuc 193 datali olmaoi
+second_data = time_equalise(time_list,aggregated_data,1)   
+
+solution = sol_LD_t
+first_solution = time_equalise(time_list,solution,0)   
+second_solution = time_equalise(time_list,solution,1)   
+  
+harvest = np.empty([17,len(time_list)],dtype=object)
+harvest[0] = cb
+harvest[1] = first_data[0]
+harvest[2] = first_solution[0]
+harvest[3] = second_data[0]
+harvest[4] = second_solution[0]
+harvest[5] = first_data[1]
+harvest[6] = first_solution[1]
+harvest[7] = second_data[1]
+harvest[8] = second_solution[1]
+
+harvest[9] = first_data[2]
+harvest[10] = first_solution[2]
+harvest[11] = second_data[2]
+harvest[12] = second_solution[2]
+harvest[13] = first_data[3]
+harvest[14] = first_solution[3]
+harvest[15] = second_data[3]
+harvest[16] = second_solution[3]
+
+
+y_axis_labels = ['Light regime(LD/DD)','$LHY$ data', '$LHY$ prediction','$LHY$ data', '$LHY$ prediction', 
+                 '$TOC_{1}$ data', '$TOC_{1}$ prediction','$TOC_{1}$ data', '$TOC_{1}$ prediction',
+                 '$X$ data', '$X$ prediction', '$X$ data', '$X$ prediction',
+                 '$Y$ data', '$Y$ prediction', '$Y$ data', '$Y$ prediction'] # labels for x-axis
+cols = time_list
+
+df = pd.DataFrame(harvest, columns=cols,index = y_axis_labels,dtype=float)
+
+
+
+plt.figure()
+matplotlib.rc('figure', figsize=(20, 9))
+
+sns.set(font_scale=1.9)
+s = sns.heatmap(df,yticklabels=True,xticklabels=True,cmap='Reds',cbar = False)  ### Reds, Greys,Blues,PuRd
+
+plt.xticks(rotation=0)
+for ind, label in enumerate(s.get_xticklabels()):
+    if ind % 16 == 0:  # every 10th label is kept
+        label.set_visible(True)
+    else:
+        label.set_visible(False)    
+plt.tick_params(axis=u'both', which=u'both',length=8,color='black',bottom=False,left=True) 
+plt.locator_params(axis='x', nbins=200)  
+plt.savefig('Desktop/cont_figs/%s_heatmap_LD_%s_%s_%s_red.eps'%(model,gate,f_idx,s_idx), format='eps',bbox_inches='tight')
+#plt.tick_params(axis=u'both',length=15,color='black',bottom=True,left=True)                                               
+plt.tight_layout() 
+
+#####################################################################################
+#####################################################################################  The same for dark data
+
+
+# ############   24den sonraki hal--- 24 yoksa bir oncekini alsin ama 24 varsa oradan itibaren alsin, cunku data 24den baslayacak
+
+# datDD_t[0]['x'] = datDD_t[0]['x'][10:52]
+# datDD_t[0]['y'][0] = datDD_t[0]['y'][0][10:52]
+# datDD_t[0]['y'][1] = datDD_t[0]['y'][1][10:52]
+# datDD_t[0]['y'][2] = datDD_t[0]['y'][2][10:52]
+# datDD_t[0]['y'][3] = datDD_t[0]['y'][3][10:52]
+
+# datDD_t[1]['x'] = datDD_t[1]['x'][10:52]#[8:42]
+# datDD_t[1]['y'][0] = datDD_t[1]['y'][0][10:52]#[8:42]
+# datDD_t[1]['y'][1] = datDD_t[1]['y'][1][10:52]#[8:42]
+# datDD_t[1]['y'][2] = datDD_t[1]['y'][2][10:52]#[8:42]
+# datDD_t[1]['y'][3] = datDD_t[1]['y'][3][10:52]#[8:42]
+
+
+
+solution = sol_DD_t
+data_threshold = datDD_t
+data1={}
+#data1['x'] = data1['x'] + 3
+time, y0, y1,y2,y3 = [[] for i in range(5)]
+for i,val in enumerate(solution[0]['x']):
+    time.append(val)
+    for j,value in enumerate(data_threshold[0]['x']):         
+        if val<=value:
+            #print(val,value)
+            y0.append(data_threshold[0]['y'][0][j-1])
+            #print(y0)
+            y1.append(data_threshold[0]['y'][1][j-1])
+            y2.append(data_threshold[0]['y'][2][j-1])
+            y3.append(data_threshold[0]['y'][3][j-1])
+            y = [y0,y1,y2,y3]               
+            break
+data1['x'] = time
+data1['y']= y
+
+### alttakini fonk olarak yaz
+data2={}
+time, y0, y1,y2,y3 = [[] for i in range(5)]
+for i,val in enumerate(solution[1]['x']):
+    time.append(val)
+    for j,value in enumerate(data_threshold[1]['x']):         
+        if val<=value:
+            #print(val,value)
+            y0.append(data_threshold[1]['y'][0][j-1])
+            #print(y0)
+            y1.append(data_threshold[1]['y'][1][j-1])
+            y2.append(data_threshold[1]['y'][2][j-1])
+            y3.append(data_threshold[0]['y'][3][j-1])
+            y = [y0,y1,y2,y3]                           
+            break
+data2['x'] = time
+data2['y']= y
+
+light_cbar = [1,1,1,1,1]
+##############  this is for LD colormap
+time_list = np.linspace(24,120,193)
+# asagisi tekrar comt out
+def time_equalise(time_list,aggregated_data,m=0): # this means the first sol
+    y0 = []
+    for i,val in enumerate(time_list):
+        for j,value in enumerate(aggregated_data['x']):         
+            if val<=value:
+                y0.append(aggregated_data['y'][j-1])
+                y = y0             
+                break                 
+    while len(time_list)!= len(y0):
+        y.append(aggregated_data['y'][-1])
+    return y  
+
+light_switch= []
+for i in range(4,21) :
+    if i == 4:
+        light_switch.append(6*i)    
+    if i % 2 == 1:
+        light_switch.append(6*i)    
+light_cbar = {}
+light_cbar['x'] = light_switch
+light_cbar['y'] = [1,1,1,1,1,1,1,1,1]  
+T = time_equalise(time_list,light_cbar,m=0)
+##################
+
+
+def time_equalise(time_list,aggregated_data,m=0): # this means the first sol
+    y0,y1,y2,y3 = [[] for i in range(4)]
+    for i,val in enumerate(time_list):
+        for j,value in enumerate(aggregated_data[m]['x']):         
+            if val<=value:
+                y0.append(aggregated_data[m]['y'][0][j-1])
+                y1.append(aggregated_data[m]['y'][1][j-1])
+                y2.append(aggregated_data[m]['y'][2][j-1])
+                y3.append(aggregated_data[m]['y'][3][j-1])
+                y = [y0,y1,y2,y3]               
+                break                 
+    while len(time_list)!= len(y0):
+        y[0].append(aggregated_data[m]['y'][0][-1])
+        y[1].append(aggregated_data[m]['y'][1][-1])  
+        y[2].append(aggregated_data[m]['y'][2][-1])  
+        y[3].append(aggregated_data[m]['y'][3][-1])  
+    return y      
+cb = []
+for i in range(len(T)):
+    cb.append(float(T[i]))
+    
+# plt.plot(datLD_t[0]['x'],datLD_t[0]['y'][0])
+# plt.plot(time_list,first_data[0])
+
+
+aggregated_data = datDD_t
+first_data = time_equalise(time_list,aggregated_data,0)   
+second_data = time_equalise(time_list,aggregated_data,1)   
+
+solution = sol_DD_t
+first_solution = time_equalise(time_list,solution,0)   
+second_solution = time_equalise(time_list,solution,1)   
+  
+harvest = np.empty([17,len(time_list)],dtype=object)
+harvest[0] = cb
+harvest[1] = first_data[0]
+harvest[2] = first_solution[0]
+harvest[3] = second_data[0]
+harvest[4] = second_solution[0]
+harvest[5] = first_data[1]
+harvest[6] = first_solution[1]
+harvest[7] = second_data[1]
+harvest[8] = second_solution[1]
+
+harvest[9] = first_data[2]
+harvest[10] = first_solution[2]
+harvest[11] = second_data[2]
+harvest[12] = second_solution[2]
+harvest[13] = first_data[3]
+harvest[14] = first_solution[3]
+harvest[15] = second_data[3]
+harvest[16] = second_solution[3]
+
+
+y_axis_labels = ['Light regime(LD/DD)','$LHY$ data', '$LHY$ prediction','$LHY$ data', '$LHY$ prediction', 
+                 '$TOC_{1}$ data', '$TOC_{1}$ prediction','$TOC_{1}$ data', '$TOC_{1}$ prediction',
+                 '$X$ data', '$X$ prediction', '$X$ data', '$X$ prediction',
+                 '$Y$ data', '$Y$ prediction', '$Y$ data', '$Y$ prediction'] # labels for x-axis
+cols = time_list
+
+df = pd.DataFrame(harvest, columns=cols,  # np.linspace(24, 120, 26)
+                   index = y_axis_labels,dtype="float")
+
+
+plt.figure()
+matplotlib.rc('figure', figsize=(20, 9))
+sns.set(font_scale=1.9)
+s = sns.heatmap(df,xticklabels=True, yticklabels=True,cmap='Reds',cbar = False)  ### Reds, Greys,Blues,PuRd
+
+plt.xticks(rotation=0)
+for ind, label in enumerate(s.get_xticklabels()):
+    if ind % 16 == 0:  # every 10th label is kept
+        label.set_visible(True)
+    else:
+        label.set_visible(False)    
+plt.tick_params(axis=u'both', which=u'both',length=8,color='black',bottom=False,left=True) 
+plt.locator_params(axis='x', nbins=200)  
+
+plt.savefig('Desktop/cont_figs/%s_heatmap_LL_%s_%s_%s_red.eps'%(model,gate,f_idx,s_idx), format='eps',bbox_inches='tight')                                    
+plt.tight_layout() 
+
+
+
+#####################################################################################################
+###################################################################################################    TS plots.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #########################################################################################################   es plot

@@ -75,16 +75,16 @@ lightForcingDD=lightForcingDD['lightForcingDD']
 
 #############################################  CMA-ES MI without penalty
 
-with open("Desktop/Llyonesse/Neuro_1lp_res/cont/x_CMA_MI_cont.txt", "rb") as fp:   
+with open("Desktop/Llyonesse/continuous_fcn_results/neuro1lp/x_CMA_MI_cont.txt", "rb") as fp:   
     x_CMA_MI = pickle.load(fp)   
-with open("Desktop/Llyonesse/Neuro_1lp_res/cont/f_CMA_MI_cont.txt", "rb") as fp:   
+with open("Desktop/Llyonesse/continuous_fcn_results/neuro1lp/f_CMA_MI_cont.txt", "rb") as fp:   
     f_CMA_MI = pickle.load(fp)  
     
 #############################################  CMA-ES 01 without penalty
 
-with open("Desktop/Llyonesse/Neuro_1lp_res/cont/x_CMA_1.txt", "rb") as fp:   
+with open("Desktop/Llyonesse/continuous_fcn_results/cont/x_CMA_1.txt", "rb") as fp:   
     x_CMA_1 = pickle.load(fp) 
-with open("Desktop/Llyonesse/Neuro_1lp_res/cont/f_CMA_1.txt", "rb") as fp:   
+with open("Desktop/Llyonesse/continuous_fcn_results/cont/f_CMA_1.txt", "rb") as fp:   
     f_CMA_1 = pickle.load(fp) 
     
 #############################################  CMA-ES 10 without penalty

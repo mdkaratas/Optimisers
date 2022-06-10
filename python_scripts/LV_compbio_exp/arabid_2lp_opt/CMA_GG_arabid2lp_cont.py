@@ -63,7 +63,7 @@ dataLD = eng.load('dataLD.mat')
 dataDD = eng.load('dataLL.mat')
 lightForcingLD = eng.load('lightForcingLD.mat')
 lightForcingDD = eng.load('lightForcingLL.mat')
-
+globals()[f'x_%s_%s_%s' % (model,f"arabid2lp",gate)][0]
 #%%
 
 # Convert data to be used by MATLAB

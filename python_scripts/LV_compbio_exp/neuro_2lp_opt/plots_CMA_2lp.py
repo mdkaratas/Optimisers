@@ -715,7 +715,7 @@ cb.ax.tick_params(labelsize=17)
 #plt.title("g = 01")  
 matplotlib.rc('xtick', labelsize=20) #matplotlib.rc('ytick', labelsize=20) 
 #matplotlib.rc('ytick', labelsize=30)
-plt.savefig('Desktop/Figs_neuro2lp/CMAES_GG_7_pcp_naxes.eps', format='eps',bbox_inches='tight')
+#plt.savefig('Desktop/Figs_neuro2lp/CMAES_GG_7_pcp_naxes.eps', format='eps',bbox_inches='tight')
 plt.show()    
 
 

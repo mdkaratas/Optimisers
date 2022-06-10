@@ -271,7 +271,7 @@ for i in A:
     plt.axvspan(i[0],i[1], facecolor='gray')
 for i in B:
     plt.axvspan(i[0],i[1], facecolor='white')
-#plt.savefig('Desktop/cont_figs/LD_ts_data_norm_arabid2lp.eps', format='eps',bbox_inches='tight')
+plt.savefig('Desktop/cont_figs/LD_ts_data_norm_arabid2lp.eps', format='eps',bbox_inches='tight')
 plt.show()
 
 
@@ -281,21 +281,21 @@ plt.show()
 
 
 matplotlib.rc('figure', figsize=(20, 7))
-plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][0] ,linewidth=6,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][1],linewidth=6,label='$TOC_{1}$',color='rebeccapurple')#sol_LD
-plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][2],linewidth=6,label='$X$',color='blue')#sol_LD
-plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][3],linewidth=6,label='$Y$',color='red')#sol_LD
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][0] ,linewidth=2,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][1],linewidth=2,label='$TOC_{1}$',color='rebeccapurple')#sol_LD
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][2],linewidth=2,label='$X$',color='blue')#sol_LD
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][3],linewidth=2,label='$Y$',color='red')#sol_LD
 for i in range(1,len(sol_LD_CMA)):
-    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][0] ,linewidth=6,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][1],linewidth=6,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
-    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][2],linewidth=6,color='blue')
-    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][3],linewidth=6,color='red')
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][0] ,linewidth=2,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][1],linewidth=2,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][2],linewidth=2,color='blue')
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][3],linewidth=2,color='red')
     
     
     # l1 = plt.plot(df['time'], df['A'],linewidth=4,label='mRNA',color='lightsalmon')
     # l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$Protein_{bulk}$',color='rebeccapurple')
 plt.xlabel('time (h)',fontsize=25)
-plt.ylabel('Normalised expression levels',fontsize=25)
+plt.ylabel('Expression (0/1)',fontsize=30)
 plt.grid(False)
 #plt.tick_params(axis ='x')
 #plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
@@ -309,11 +309,11 @@ for i in A:
     plt.axvspan(i[0],i[1], facecolor='grey')
 for i in B:
     plt.axvspan(i[0],i[1], facecolor='white')
-#plt.savefig('Desktop/LD_ts_CMA_arabid2lp.eps', format='eps',bbox_inches='tight')    
+plt.savefig('Desktop/cont_figs/LD_ts_CMA_arabid2lp.eps', format='eps',bbox_inches='tight')    
 plt.show()
 
 ##############  Line by line for each component
-
+#####  LHY
 
 matplotlib.rc('figure', figsize=(20, 7))
 plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][0] ,linewidth=6,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
@@ -340,23 +340,15 @@ for i in A:
     plt.axvspan(i[0],i[1], facecolor='grey')
 for i in B:
     plt.axvspan(i[0],i[1], facecolor='white')
-#plt.savefig('Desktop/LD_ts_CMA_arabid2lp.eps', format='eps',bbox_inches='tight')    
+plt.savefig('Desktop/cont_figs/LD_ts_CMA_LHY_arabid2lp.eps', format='eps',bbox_inches='tight')    
 plt.show()
-##################################################################################################### NMMSO LD TS
+
+#####  TOC1 line by line
 
 matplotlib.rc('figure', figsize=(20, 7))
-plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:3][0],linewidth=6,label='$FRQ_{2}$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0] #this indexfr the state of the first variable
-plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:3][1],linewidth=6,label='$FRQ_{1}$',color='rebeccapurple')#sol_LD
-plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:3][2],linewidth=6,label='$FRQ$',color='blue')
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][1],linewidth=6,label='$TOC_{1}$',color='rebeccapurple')
 for i in range(1,len(sol_LD_CMA)):
-    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:3][0] ,linewidth=6,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:3][1]   ,linewidth=6,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0] 
-    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:3][2],linewidth=6,color='blue')     # this indexes the state of the second variable
-    #sol_LD_CMA[i]['x']              # this is the time across
-    
-    
-    # l1 = plt.plot(df['time'], df['A'],linewidth=4,label='mRNA',color='lightsalmon')
-    # l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$Protein_{bulk}$',color='rebeccapurple')
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][1],linewidth=6,color='rebeccapurple')      #this indexfr the state of the first variable
 
 plt.xlabel('time (h)',fontsize=25)
 plt.ylabel('Normalised expression levels',fontsize=25)
@@ -366,100 +358,218 @@ plt.grid(False)
 plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
 plt.yticks(fontsize= 25, alpha=1)
 plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
-plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=3,prop={'size': 20})
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=1,prop={'size': 20})
 plt.margins(x=0)
 
 for i in A:
     plt.axvspan(i[0],i[1], facecolor='grey')
 for i in B:
-    plt.axvspan(i[0],i[1], facecolor='white')   
-plt.savefig('Desktop/LD_ts_NMMSO_neuro2lp.eps', format='eps')        
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LD_ts_CMA_TOC1_arabid2lp.eps', format='eps',bbox_inches='tight')    
 plt.show()
 
-#########################################################################################################  Data TS DD
-df = {'time': no_dataDD_arr[3],
-  'A':no_dataDD_arr[0],
-  'B':no_dataDD_arr[1],
-  'C':no_dataDD_arr[2]}
+
+#####  X line by line
 
 matplotlib.rc('figure', figsize=(20, 7))
-l1 = plt.plot(df['time'], df['A'],linewidth=4,label='$FRQ_{2}$',color='lightsalmon')
-l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$FRQ_{1}$',color='rebeccapurple')
-l3 = plt.plot(df['time'], df['C'],linewidth=4,label='$FRQ$',color='blue')
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][2],linewidth=6,label='$X$',color='blue')
+for i in range(1,len(sol_LD_CMA)):
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][2],linewidth=6,color='blue')     #this indexfr the state of the first variable
+
 plt.xlabel('time (h)',fontsize=25)
 plt.ylabel('Normalised expression levels',fontsize=25)
 plt.grid(False)
 #plt.tick_params(axis ='x')
 #plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
 plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
-plt.yticks(np.arange(0, 1.1, 0.2),fontsize= 25, alpha=1)
+plt.yticks(fontsize= 25, alpha=1)
 plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
-plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),
-          fancybox=False, shadow=False, ncol=3,prop={'size': 20})
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=1,prop={'size': 20})
 plt.margins(x=0)
 
-plt.axvspan(24,120, facecolor='gray')
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='grey')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LD_ts_CMA_X_arabid2lp.eps', format='eps',bbox_inches='tight')    
+plt.show()
 
-plt.savefig('Desktop/DD_ts_data_norm_neuro2lp.eps', format='eps')
+
+#####  Y line by line
+
+matplotlib.rc('figure', figsize=(20, 7))
+plt.plot(sol_LD_CMA[0]['x'], sol_LD_CMA[0]['y'][:4][3],linewidth=6,label='$Y$',color='red')#sol_LD
+for i in range(1,len(sol_LD_CMA)):
+    plt.plot(sol_LD_CMA[i]['x'], sol_LD_CMA[i]['y'][:4][3],linewidth=6,color='red')#sol_LD  #this indexfr the state of the first variable
+
+plt.xlabel('time (h)',fontsize=25)
+plt.ylabel('Normalised expression levels',fontsize=25)
+plt.grid(False)
+#plt.tick_params(axis ='x')
+#plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
+plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
+plt.yticks(fontsize= 25, alpha=1)
+plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=1,prop={'size': 20})
+plt.margins(x=0)
+
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='grey')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LD_ts_CMA_Y_arabid2lp.eps', format='eps',bbox_inches='tight')    
+plt.show()
+
+##################################################################################################### 
+##################################################################################################### 
+##################################################################################################### NMMSO LD TS
+
+
+matplotlib.rc('figure', figsize=(20, 7))
+plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:4][0] ,linewidth=1,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:4][1],linewidth=1,label='$TOC_{1}$',color='rebeccapurple')#sol_LD
+plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:4][2],linewidth=1,label='$X$',color='blue')#sol_LD
+plt.plot(sol_LD_NMMSO[0]['x'], sol_LD_NMMSO[0]['y'][:4][3],linewidth=1,label='$Y$',color='red')#sol_LD
+for i in range(1,len(sol_LD_NMMSO)):
+    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:4][0] ,linewidth=1,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:4][1],linewidth=1,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
+    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:4][2],linewidth=1,color='blue')
+    plt.plot(sol_LD_NMMSO[i]['x'], sol_LD_NMMSO[i]['y'][:4][3],linewidth=1,color='red')
+    
+
+plt.xlabel('time (h)',fontsize=25)
+plt.ylabel('Expression (0/1)',fontsize=30)
+plt.grid(False)
+#plt.tick_params(axis ='x')
+#plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
+plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
+plt.yticks(fontsize= 25, alpha=1)
+plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=4,prop={'size': 20})
+plt.margins(x=0)
+
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='grey')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LD_ts_NMMSO_arabid2lp.eps', format='eps',bbox_inches='tight')    
+plt.show()
+
+#########################################################################################################  Data TS DD
+df = {'time': no_dataDD_arr[4],
+  'A':no_dataDD_arr[0],
+  'B':no_dataDD_arr[1],
+  'C':no_dataDD_arr[2],
+  'D':no_dataDD_arr[3]}    
+dl_sep = list(partition(df['time'],time_swap))   # Dark-light seperation list 12LD 12LL
+
+
+####  bi ona bi ona light-dark saatler ayrilmis
+a = []
+b = []
+for i in range(len(dl_sep)):
+    if i % 2 == 0:
+        a.append(dl_sep[i])
+    elif i % 2 == 1:
+        b.append(dl_sep[i])
+A =[]
+B=[]
+for i in range(len(a)):
+    #print([a[i][0],a[i][-1]])
+    A.append([a[i][0],a[i][-1]])
+
+for i in range(len(b)):
+
+    B.append([b[i][0],b[i][-1]])
+
+
+matplotlib.rc('figure', figsize=(20, 7))
+l1 = plt.plot(df['time'], df['A'],linewidth=4,label='$LHY$',color='lightsalmon')
+l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$TOC_{1}$',color='rebeccapurple')
+l3 = plt.plot(df['time'], df['C'],linewidth=4,label='$X$',color='blue')
+l4 = plt.plot(df['time'], df['D'],linewidth=4,label='$Y$',color='red')
+plt.xlabel('time (h)',fontsize=30)
+plt.ylabel('Normalised expression levels',fontsize=30)
+plt.grid(False)
+#plt.tick_params(axis ='x')
+#plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
+plt.xticks(np.arange(18, 121, 6),fontsize= 27, alpha=1)
+plt.yticks(np.arange(0, 1.1, 0.2),fontsize= 27, alpha=1)
+plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.12),
+          fancybox=False, shadow=False, ncol=4,prop={'size': 20})
+plt.margins(x=0)
+
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='white')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LL_ts_data_norm_arabid2lp.eps', format='eps',bbox_inches='tight')
 plt.show()
 
 #################################################################################################### CMA DD TS
 matplotlib.rc('figure', figsize=(20, 7))
-plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:3][0] ,linewidth=6,label='$FRQ_{2}$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:3][1],linewidth=6,label='$FRQ_{1}$',color='rebeccapurple')#sol_LD
-plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:3][2],linewidth=6,label='$FRQ$',color='blue')
-for i in range(1,len(sol_DD_CMA)):
-    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:3][0] ,linewidth=6,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:3][1] ,linewidth=6,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
-    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:3][2] ,linewidth=6,color='blue')
-    #sol_LD_CMA[i]['x']              # this is the time across
+plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:4][0] ,linewidth=2,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:4][1],linewidth=2,label='$TOC_{1}$',color='rebeccapurple')#sol_LD
+plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:4][2],linewidth=2,label='$X$',color='blue')#sol_LD
+plt.plot(sol_DD_CMA[0]['x'], sol_DD_CMA[0]['y'][:4][3],linewidth=2,label='$Y$',color='red')#sol_LD
+for i in range(1,len(sol_LD_CMA)):
+    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:4][0] ,linewidth=2,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:4][1],linewidth=2,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
+    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:4][2],linewidth=2,color='blue')
+    plt.plot(sol_DD_CMA[i]['x'], sol_DD_CMA[i]['y'][:4][3],linewidth=2,color='red')
     
     
     # l1 = plt.plot(df['time'], df['A'],linewidth=4,label='mRNA',color='lightsalmon')
     # l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$Protein_{bulk}$',color='rebeccapurple')
 plt.xlabel('time (h)',fontsize=25)
-plt.ylabel('Normalised expression levels',fontsize=25)
+plt.ylabel('Expression (0/1)',fontsize=30)
 plt.grid(False)
 #plt.tick_params(axis ='x')
 #plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
 plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
 plt.yticks(fontsize= 25, alpha=1)
 plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
-plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=3,prop={'size': 20})
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=4,prop={'size': 20})
 plt.margins(x=0)
 
-plt.axvspan(24,120, facecolor='gray')
-plt.savefig('Desktop/DD_ts_CMA_neuro2lp.eps', format='eps')    
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='white')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LL_ts_CMA_arabid2lp.eps', format='eps',bbox_inches='tight')    
 plt.show()
+
 ############################################################################################################ NMMSO DD TS
 
 matplotlib.rc('figure', figsize=(20, 7))
-plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:3][0],linewidth=6,label='$FRQ_{2}$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0] #this indexfr the state of the first variable
-plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:3][1],linewidth=6,label='$FRQ_{1}$',color='rebeccapurple')#sol_LD
-plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:3][2],linewidth=6,label='$FRQ$',color='blue')
-for i in range(1,len(sol_DD_NMMSO)):
-    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:3][0] ,linewidth=6,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
-    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:3][1] ,linewidth=6,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
-    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:3][2] ,linewidth=6,color='blue')    # this indexes the state of the second variable
-    #sol_LD_CMA[i]['x']              # this is the time across
+plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:4][0] ,linewidth=1,label='$LHY$',color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:4][1],linewidth=1,label='$TOC_{1}$',color='rebeccapurple')#sol_LD
+plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:4][2],linewidth=1,label='$X$',color='blue')#sol_LD
+plt.plot(sol_DD_NMMSO[0]['x'], sol_DD_NMMSO[0]['y'][:4][3],linewidth=1,label='$Y$',color='red')#sol_LD
+for i in range(1,len(sol_LD_NMMSO)):
+    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:4][0] ,linewidth=1,color='lightsalmon')#sol_LD_CMA[i]['y'][:2][0]      #this indexfr the state of the first variable
+    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:4][1],linewidth=1,color='rebeccapurple')#sol_LD_CMA[i]['y'][:2][0]       # this indexes the state of the second variable
+    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:4][2],linewidth=1,color='blue')
+    plt.plot(sol_DD_NMMSO[i]['x'], sol_DD_NMMSO[i]['y'][:4][3],linewidth=1,color='red')
     
-    
-    # l1 = plt.plot(df['time'], df['A'],linewidth=4,label='mRNA',color='lightsalmon')
-    # l2 = plt.plot(df['time'], df['B'],linewidth=4,label='$Protein_{bulk}$',color='rebeccapurple')
 
 plt.xlabel('time (h)',fontsize=25)
-plt.ylabel('Normalised expression levels',fontsize=25)
+plt.ylabel('Expression (0/1)',fontsize=25)
 plt.grid(False)
 #plt.tick_params(axis ='x')
 #plt.tick_params(axis ='y')  # ax4.tick_params(axis ='x', rotation = 45)
 plt.xticks(np.arange(18, 121, 6),fontsize= 25, alpha=1)
 plt.yticks(fontsize= 25, alpha=1)
 plt.tick_params(axis=u'both', which=u'both',length=15,color='black',bottom=True,left=True)
-plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=3,prop={'size': 20})
+plt.legend(loc='upper center',bbox_to_anchor=(0.5, 1.135),fancybox=False, shadow=False, ncol=4,prop={'size': 20})
 plt.margins(x=0)
 
-plt.axvspan(24,120, facecolor='gray')
-plt.savefig('Desktop/DD_ts_NMMSO_neuro2lp.eps', format='eps')        
+for i in A:
+    plt.axvspan(i[0],i[1], facecolor='white')
+for i in B:
+    plt.axvspan(i[0],i[1], facecolor='white')
+plt.savefig('Desktop/cont_figs/LL_ts_NMMSO_arabid2lp.eps', format='eps',bbox_inches='tight')    
 plt.show()
 
 
